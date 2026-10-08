@@ -1,0 +1,104 @@
+---
+import { rubriqueUrl, type Rubrique } from '../config/rubriques';
+import { SITE } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { Article } from '../lib/articles';
+import { breadcrumbSchema } from '../lib/seo';
+import ArticleGrid from './ArticleGrid.astro';
+import Breadcrumb from './Breadcrumb.astro';
+import InstagramBlock from './InstagramBlock.astro';
+import Pagination from './Pagination.astro';
+
+interface Props {
+  rubrique: Rubrique;
+  articles: Article[];
+  currentPage: number;
+  totalPages: number;
+}
+
+const { rubrique, articles, currentPage, totalPages } = Astro.props;
+const baseUrl = rubriqueUrl(rubrique.slug);
+const crumbs = [
+  { name: 'Accueil', path: '/' },
+  { name: rubrique.name, path: baseUrl },
+];
+const pageSuffix = currentPage > 1 ? ` (page ${currentPage})` : '';
+const isEmpty = articles.length === 0;
+---
+
+<BaseLayout
+  title={`${rubrique.name}${pageSuffix}`}
+  description={`${rubrique.description}. Toutes les pépites de la rubrique ${rubrique.name} du Filon${pageSuffix}.`}
+  jsonLd={[breadcrumbSchema(crumbs)]}
+  noindex={isEmpty}
+  rss={{ title: `${SITE.name} : ${rubrique.name}`, href: `${baseUrl}rss.xml` }}
+>
+  <div class="container">
+    <header class="head">
+      <Breadcrumb crumbs={crumbs} />
+      <h1>{rubrique.name}</h1>
+      <p>{rubrique.description}</p>
+    </header>
+
+    {
+      isEmpty ? (
+        <div class="empty">
+          <p class="empty-title">On creuse encore par ici.</p>
+          <p>Les premières pépites de cette rubrique arrivent très vite. En attendant, il y en a plein d'autres à découvrir.</p>
+          <a class="button button--noir" href="/">
+            Voir les dernières pépites
+          </a>
+        </div>
+      ) : (
+        <ArticleGrid articles={articles} heading="h2" showDescription />
+      )
+    }
+
+    <Pagination current={currentPage} total={totalPages} baseUrl={baseUrl} />
+
+    <div class="insta">
+      <InstagramBlock />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .head {
+    padding-block: 1.5rem 2rem;
+  }
+
+  h1 {
+    margin-top: 0.75rem;
+    font-size: clamp(2.25rem, 8vw, 3.5rem);
+  }
+
+  h1::after {
+    content: '.';
+    color: var(--or);
+  }
+
+  .head p {
+    margin-top: 0.5rem;
+    color: var(--gris);
+    font-size: 1.125rem;
+  }
+
+  .empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 2.5rem 1.5rem;
+    background: var(--blanc);
+    border-radius: var(--rayon);
+  }
+
+  .empty-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+
+  .insta {
+    margin-top: 3rem;
+  }
+</style>

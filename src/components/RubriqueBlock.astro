@@ -1,0 +1,27 @@
+---
+import { rubriqueUrl, type Rubrique } from '../config/rubriques';
+import type { Article } from '../lib/articles';
+import ArticleGrid from './ArticleGrid.astro';
+
+interface Props {
+  rubrique: Rubrique;
+  articles: Article[];
+}
+
+const { rubrique, articles } = Astro.props;
+---
+
+<section class="section" aria-labelledby={`rubrique-${rubrique.slug}`}>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title" id={`rubrique-${rubrique.slug}`}>{rubrique.name}</h2>
+        <p class="section-sub">{rubrique.description}</p>
+      </div>
+      <a class="section-link" href={rubriqueUrl(rubrique.slug)}>
+        Tout voir<span class="visually-hidden"> dans {rubrique.name}</span>
+      </a>
+    </div>
+    <ArticleGrid articles={articles} />
+  </div>
+</section>

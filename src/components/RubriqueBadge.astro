@@ -1,0 +1,45 @@
+---
+import { getRubrique, rubriqueUrl, type RubriqueSlug } from '../config/rubriques';
+
+interface Props {
+  rubrique: RubriqueSlug;
+  variant?: 'or' | 'noir';
+  // Sans lien quand la pastille est déjà dans une carte cliquable
+  link?: boolean;
+}
+
+const { rubrique, variant = 'or', link = true } = Astro.props;
+const { name } = getRubrique(rubrique);
+const Tag = link ? 'a' : 'span';
+---
+
+<Tag class:list={['badge', `badge--${variant}`]} href={link ? rubriqueUrl(rubrique) : undefined}>{name}</Tag>
+
+<style>
+  .badge {
+    display: inline-block;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 999px;
+  }
+
+  .badge--or {
+    background: var(--or);
+    color: var(--noir);
+  }
+
+  .badge--noir {
+    background: var(--noir);
+    color: var(--blanc);
+  }
+
+  a.badge:hover {
+    outline: 2px solid var(--noir);
+    outline-offset: 2px;
+  }
+</style>

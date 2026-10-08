@@ -1,0 +1,71 @@
+---
+import ArticleGrid from '../components/ArticleGrid.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublishedArticles } from '../lib/articles';
+
+const latest = (await getPublishedArticles()).slice(0, 3);
+---
+
+<BaseLayout
+  title="Page introuvable"
+  description="Cette page n'existe pas ou a été déplacée. Retrouvez toutes les pépites du Filon depuis l'accueil."
+  noindex
+>
+  <div class="container">
+    <section class="hero">
+      <p class="code" aria-hidden="true">404</p>
+      <h1>On a creusé partout, pas de pépite ici.</h1>
+      <p>Cette page a filé ou n'a jamais existé. Bonne nouvelle : le reste du filon est intact.</p>
+      <a class="button" href="/">Retour à l'accueil</a>
+    </section>
+
+    {
+      latest.length > 0 && (
+        <section class="section" aria-labelledby="consolation">
+          <div class="section-head">
+            <h2 class="section-title" id="consolation">
+              De quoi vous consoler
+            </h2>
+          </div>
+          <ArticleGrid articles={latest} />
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 2.5rem 1.5rem;
+    background: var(--noir);
+    color: var(--blanc);
+    border-radius: var(--rayon);
+  }
+
+  .code {
+    color: var(--or);
+    font-size: clamp(4rem, 18vw, 8rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 6vw, 2.75rem);
+  }
+
+  .hero p:not(.code) {
+    color: #d6d0c2;
+  }
+
+  @media (min-width: 48rem) {
+    .hero {
+      padding: 4rem 3rem;
+    }
+  }
+</style>

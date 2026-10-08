@@ -1,0 +1,63 @@
+---
+interface Props {
+  sources: { name: string; url: string }[];
+}
+
+const { sources } = Astro.props;
+---
+
+<aside class="sources" aria-labelledby="sources-title">
+  <h2 id="sources-title">{sources.length > 1 ? 'Sources' : 'Source'}</h2>
+  <ul>
+    {
+      sources.map((source) => (
+        <li>
+          <a href={source.url} target="_blank" rel="noopener noreferrer">
+            {source.name}
+            <span class="visually-hidden">(nouvel onglet)</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p>Au Filon, chaque histoire est vérifiée et sa source est toujours citée.</p>
+</aside>
+
+<style>
+  .sources {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    background: var(--blanc);
+    border-left: 6px solid var(--or);
+    border-radius: 0.5rem;
+  }
+
+  h2 {
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    margin: 0.75rem 0 0;
+    padding-left: 1.125rem;
+  }
+
+  li + li {
+    margin-top: 0.375rem;
+  }
+
+  a {
+    font-weight: 600;
+    text-decoration-color: var(--or);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 4px;
+    overflow-wrap: anywhere;
+  }
+
+  p {
+    margin-top: 1rem;
+    color: var(--gris);
+    font-size: 0.875rem;
+  }
+</style>

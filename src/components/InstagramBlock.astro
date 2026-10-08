@@ -1,0 +1,48 @@
+---
+import { INSTAGRAM } from '../config/site';
+import Icon from './Icon.astro';
+---
+
+<aside class="instagram" aria-labelledby="instagram-title">
+  <div class="text">
+    <h2 id="instagram-title">Suivez-nous sur Instagram</h2>
+    <p>Une pépite par jour dans votre fil</p>
+  </div>
+  <a class="button" href={INSTAGRAM.url} target="_blank" rel="noopener noreferrer">
+    <Icon name="instagram" size={22} />
+    {INSTAGRAM.handle}
+    <span class="visually-hidden">(nouvel onglet)</span>
+  </a>
+</aside>
+
+<style>
+  .instagram {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+    background: var(--noir);
+    color: var(--blanc);
+    border-radius: var(--rayon);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  p {
+    margin-top: 0.5rem;
+    color: #d6d0c2;
+    font-size: 1.0625rem;
+  }
+
+  @media (min-width: 48rem) {
+    .instagram {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2.5rem 3rem;
+    }
+  }
+</style>

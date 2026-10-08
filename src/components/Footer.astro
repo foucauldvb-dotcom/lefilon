@@ -1,0 +1,149 @@
+---
+import { Image } from 'astro:assets';
+import logoBlanc from '../assets/logo/lefilon-logo-blanc.png';
+import { RUBRIQUES, rubriqueUrl } from '../config/rubriques';
+import { SITE } from '../config/site';
+import Icon from './Icon.astro';
+import SocialLinks from './SocialLinks.astro';
+
+const year = new Date().getFullYear();
+
+const pages = [
+  { name: 'À propos', href: '/a-propos/' },
+  { name: 'Contact', href: '/contact/' },
+  { name: 'La rédaction', href: SITE.authorPath },
+  { name: 'Mentions légales', href: '/mentions-legales/' },
+  { name: 'Politique de confidentialité', href: '/politique-de-confidentialite/' },
+];
+---
+
+<footer class="site-footer">
+  <div class="container grid">
+    <div class="brand">
+      <a href="/" aria-label={`${SITE.name}, retour à l'accueil`}>
+        <Image src={logoBlanc} alt={SITE.name} width={148} height={40} densities={[1, 2]} loading="lazy" />
+      </a>
+      <p>{SITE.tagline}</p>
+      <div class="social-row">
+        <SocialLinks />
+        <a class="rss" href="/rss.xml" aria-label="Flux RSS du Filon">
+          <Icon name="rss" size={22} />
+        </a>
+      </div>
+    </div>
+    <nav aria-label="Rubriques (pied de page)">
+      <p class="heading">Rubriques</p>
+      <ul>
+        {
+          RUBRIQUES.map((rubrique) => (
+            <li>
+              <a href={rubriqueUrl(rubrique.slug)}>{rubrique.name}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <nav aria-label="Informations">
+      <p class="heading">Le Filon</p>
+      <ul>
+        {
+          pages.map((page) => (
+            <li>
+              <a href={page.href}>{page.name}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+  <div class="container legal">
+    <p>© {year} {SITE.name}. Chaque histoire est vérifiée, chaque source est citée.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 3rem;
+    padding-block: 3rem 1.5rem;
+    background: var(--noir);
+    color: var(--blanc);
+  }
+
+  .grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .brand a:first-child {
+    display: inline-block;
+    margin-left: -0.5rem;
+  }
+
+  .brand p {
+    max-width: 22rem;
+    margin-top: 0.75rem;
+    color: #d6d0c2;
+  }
+
+  .social-row {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 1rem;
+    margin-left: -0.75rem;
+  }
+
+  .rss {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+  }
+
+  .rss:hover {
+    background: var(--or);
+    color: var(--noir);
+  }
+
+  .heading {
+    margin-bottom: 0.75rem;
+    color: var(--or);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li a {
+    display: inline-block;
+    padding-block: 0.4rem;
+    text-decoration: none;
+  }
+
+  li a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--or);
+    text-underline-offset: 4px;
+  }
+
+  .legal {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #3a352b;
+    color: #d6d0c2;
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 48rem) {
+    .grid {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+  }
+</style>

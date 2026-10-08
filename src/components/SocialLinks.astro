@@ -1,0 +1,51 @@
+---
+import { SITE, SOCIALS } from '../config/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  size?: number;
+}
+
+const { size = 24 } = Astro.props;
+---
+
+<ul class="socials">
+  {
+    SOCIALS.map((social) => (
+      <li>
+        <a
+          href={social.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${SITE.name} sur ${social.name} (nouvel onglet)`}
+        >
+          <Icon name={social.id} size={size} />
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .socials {
+    display: flex;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    transition: background-color 0.15s ease;
+  }
+
+  a:hover {
+    background: var(--or);
+    color: var(--noir);
+  }
+</style>

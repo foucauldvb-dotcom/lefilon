@@ -1,0 +1,87 @@
+---
+import ArticleGrid from '../components/ArticleGrid.astro';
+import FeaturedArticle from '../components/FeaturedArticle.astro';
+import InstagramBlock from '../components/InstagramBlock.astro';
+import RubriqueBlock from '../components/RubriqueBlock.astro';
+import { RUBRIQUES } from '../config/rubriques';
+import { SITE } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublishedArticles } from '../lib/articles';
+import { organizationSchema, websiteSchema } from '../lib/seo';
+
+const articles = await getPublishedArticles();
+const [featured, ...rest] = articles;
+const latest = rest.slice(0, 6);
+
+const blocks = RUBRIQUES.map((rubrique) => ({
+  rubrique,
+  articles: articles.filter((article) => article.data.rubrique === rubrique.slug).slice(0, 3),
+})).filter((block) => block.articles.length > 0);
+---
+
+<BaseLayout
+  title={`${SITE.name} : bonnes nouvelles, insolite et pépites du web`}
+  rawTitle
+  description={SITE.description}
+  jsonLd={[organizationSchema(), websiteSchema()]}
+>
+  <div class="container intro">
+    <h1>{SITE.tagline}</h1>
+  </div>
+
+  {
+    featured && (
+      <section class="container" aria-label="À la une">
+        <FeaturedArticle article={featured} />
+      </section>
+    )
+  }
+
+  {
+    latest.length > 0 && (
+      <section class="section" aria-labelledby="derniers-articles">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title" id="derniers-articles">
+              Dernières pépites
+            </h2>
+          </div>
+          <ArticleGrid articles={latest} showDescription />
+        </div>
+      </section>
+    )
+  }
+
+  <div class="container">
+    <InstagramBlock />
+  </div>
+
+  {blocks.map((block) => <RubriqueBlock rubrique={block.rubrique} articles={block.articles} />)}
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-block: 1.75rem 1.5rem;
+  }
+
+  h1 {
+    max-width: 22ch;
+    font-size: clamp(1.75rem, 6vw, 3rem);
+  }
+
+  h1::after {
+    content: '';
+    display: block;
+    width: 3.5rem;
+    height: 0.4rem;
+    margin-top: 1rem;
+    background: var(--or);
+    border-radius: 999px;
+  }
+
+  @media (min-width: 48rem) {
+    .intro {
+      padding-block: 3rem 2rem;
+    }
+  }
+</style>

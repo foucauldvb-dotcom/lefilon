@@ -1,0 +1,32 @@
+---
+import RubriqueListing from '../../../components/RubriqueListing.astro';
+import { RUBRIQUES, type Rubrique } from '../../../config/rubriques';
+import { SITE } from '../../../config/site';
+import { getArticlesByRubrique, paginate, type Article } from '../../../lib/articles';
+
+// Pages 2 et suivantes : /pepites/page/2/. La page 1 est servie par /pepites/.
+export async function getStaticPaths() {
+  const paths = [];
+  for (const rubrique of RUBRIQUES) {
+    const pages = paginate(await getArticlesByRubrique(rubrique.slug), SITE.articlesPerPage);
+    for (let index = 1; index < pages.length; index++) {
+      paths.push({
+        params: { rubrique: rubrique.slug, page: String(index + 1) },
+        props: { rubrique, articles: pages[index], currentPage: index + 1, totalPages: pages.length },
+      });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  rubrique: Rubrique;
+  articles: Article[];
+  currentPage: number;
+  totalPages: number;
+}
+
+const { rubrique, articles, currentPage, totalPages } = Astro.props;
+---
+
+<RubriqueListing rubrique={rubrique} articles={articles} currentPage={currentPage} totalPages={totalPages} />

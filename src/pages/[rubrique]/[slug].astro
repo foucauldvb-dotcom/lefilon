@@ -1,0 +1,227 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import AdSlot from '../../components/AdSlot.astro';
+import ArticleBody from '../../components/ArticleBody.astro';
+import ArticleGrid from '../../components/ArticleGrid.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import InstagramBlock from '../../components/InstagramBlock.astro';
+import RubriqueBadge from '../../components/RubriqueBadge.astro';
+import SourceBox from '../../components/SourceBox.astro';
+import { getRubrique, rubriqueUrl } from '../../config/rubriques';
+import { SITE } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  articleUrl,
+  formatDate,
+  getPublishedArticles,
+  getRelatedArticles,
+  readingTime,
+  type Article,
+} from '../../lib/articles';
+import { breadcrumbSchema, newsArticleSchema } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+  return articles.map((article) => ({
+    params: { rubrique: article.data.rubrique, slug: article.id },
+    props: { article, related: getRelatedArticles(article, articles) },
+  }));
+}
+
+interface Props {
+  article: Article;
+  related: Article[];
+}
+
+const { article, related } = Astro.props;
+const { data } = article;
+
+// Google Discover exige une image principale d'au moins 1200 px de large
+const MIN_IMAGE_WIDTH = 1200;
+if (data.image.width < MIN_IMAGE_WIDTH) {
+  throw new Error(
+    `Article "${article.id}" : l'image principale fait ${data.image.width} px de large, il en faut au moins ${MIN_IMAGE_WIDTH}.`,
+  );
+}
+
+const { Content } = await render(article);
+const rubrique = getRubrique(data.rubrique);
+const minutes = readingTime(article.body);
+
+// Image de partage et formats 16:9, 4:3 et 1:1 recommandés par Google pour NewsArticle
+const cover = (width: number, height: number) =>
+  getImage({ src: data.image, width, height, fit: 'cover', format: 'jpg', quality: 82 });
+const [og, wide, classic, square] = await Promise.all([
+  cover(1200, 630),
+  cover(1200, 675),
+  cover(1200, 900),
+  cover(1200, 1200),
+]);
+const schemaImages = [wide, classic, square].map((image) => new URL(image.src, SITE.url).href);
+
+const crumbs = [
+  { name: 'Accueil', path: '/' },
+  { name: rubrique.name, path: rubriqueUrl(rubrique.slug) },
+  { name: data.title, path: articleUrl(article) },
+];
+
+const heroWidths = [480, 768, 1200, 1600].filter((width) => width <= data.image.width);
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  type="article"
+  image={og.src}
+  imageAlt={data.imageAlt}
+  article={{
+    publishedTime: data.date,
+    modifiedTime: data.updatedDate,
+    section: rubrique.name,
+    author: data.author,
+  }}
+  jsonLd={[newsArticleSchema(article, schemaImages), breadcrumbSchema(crumbs)]}
+>
+  <article>
+    <header class="container narrow head">
+      <Breadcrumb crumbs={crumbs.slice(0, 2)} />
+      <p class="badge"><RubriqueBadge rubrique={data.rubrique} /></p>
+      <h1>{data.title}</h1>
+      <p class="chapo">{data.description}</p>
+      <p class="meta">
+        <span>Par <a href={SITE.authorPath} rel="author">{data.author}</a></span>
+        <span aria-hidden="true">·</span>
+        <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{minutes} min de lecture</span>
+      </p>
+      {
+        data.updatedDate && (
+          <p class="updated">
+            Mis à jour le <time datetime={data.updatedDate.toISOString()}>{formatDate(data.updatedDate)}</time>
+          </p>
+        )
+      }
+      <AdSlot position="sous-titre" />
+    </header>
+
+    <figure class="container hero">
+      <Image
+        src={data.image}
+        alt={data.imageAlt}
+        widths={heroWidths}
+        sizes="(min-width: 60rem) 56rem, 100vw"
+        format="webp"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </figure>
+
+    <div class="container narrow">
+      <ArticleBody>
+        <Content />
+      </ArticleBody>
+      <SourceBox sources={data.sources} />
+      <AdSlot position="fin" />
+    </div>
+  </article>
+
+  <div class="container narrow insta">
+    <InstagramBlock />
+  </div>
+
+  {
+    related.length > 0 && (
+      <section class="section" aria-labelledby="a-lire-aussi">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title" id="a-lire-aussi">
+              À lire aussi
+            </h2>
+          </div>
+          <ArticleGrid articles={related} />
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .narrow {
+    max-width: calc(var(--largeur-texte) + 2 * var(--gouttiere));
+  }
+
+  .head {
+    padding-top: 1.5rem;
+  }
+
+  .badge {
+    display: flex;
+    margin-top: 1rem;
+  }
+
+  h1 {
+    margin-top: 1rem;
+    font-size: clamp(2rem, 7vw, 3.25rem);
+    line-height: 1.1;
+  }
+
+  .chapo {
+    margin-top: 1rem;
+    color: var(--gris);
+    font-size: 1.1875rem;
+    line-height: 1.5;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    margin-top: 1.25rem;
+    color: var(--gris);
+    font-size: 0.875rem;
+  }
+
+  .meta a {
+    display: inline-block;
+    padding-block: 0.5rem;
+    margin-block: -0.5rem;
+    color: var(--noir);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
+
+  .updated {
+    margin-top: 0.25rem;
+    color: var(--gris);
+    font-size: 0.8125rem;
+  }
+
+  .hero {
+    max-width: 60rem;
+    margin-block: 2rem;
+    padding-inline: 0;
+  }
+
+  .hero img {
+    width: 100%;
+    max-height: 36rem;
+    object-fit: cover;
+  }
+
+  .insta {
+    margin-top: 3rem;
+  }
+
+  @media (min-width: 60rem) {
+    .hero {
+      padding-inline: var(--gouttiere);
+    }
+
+    .hero img {
+      border-radius: var(--rayon);
+    }
+  }
+</style>

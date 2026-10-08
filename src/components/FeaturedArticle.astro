@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import { articleUrl, formatDate, readingTime, type Article } from '../lib/articles';
+import RubriqueBadge from './RubriqueBadge.astro';
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+const { data } = article;
+---
+
+<article class="featured">
+  <div class="media">
+    <Image
+      src={data.image}
+      alt={data.imageAlt}
+      width={1200}
+      height={800}
+      fit="cover"
+      widths={[480, 768, 1200]}
+      sizes="(min-width: 64rem) 44rem, 100vw"
+      format="webp"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
+  <div class="body">
+    <p class="kicker">
+      <span class="une">À la une</span>
+      <RubriqueBadge rubrique={data.rubrique} link={false} variant="noir" />
+    </p>
+    <h2 class="title">
+      <a href={articleUrl(article)}>{data.title}</a>
+    </h2>
+    <p class="description">{data.description}</p>
+    <p class="meta">
+      <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+      <span aria-hidden="true">·</span>
+      <span>{readingTime(article.body)} min de lecture</span>
+    </p>
+  </div>
+</article>
+
+<style>
+  .featured {
+    position: relative;
+    display: grid;
+    background: var(--blanc);
+    border-radius: var(--rayon);
+    overflow: hidden;
+  }
+
+  .media {
+    aspect-ratio: 3 / 2;
+    background: var(--bordure);
+  }
+
+  .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem 1.25rem 1.75rem;
+  }
+
+  .kicker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .une {
+    padding: 0.35rem 0.8rem;
+    background: var(--or);
+    font-size: 0.6875rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 999px;
+  }
+
+  .title {
+    font-size: clamp(1.625rem, 5vw, 2.5rem);
+  }
+
+  .title a {
+    text-decoration: none;
+  }
+
+  .title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .featured:hover .title a {
+    text-decoration: underline;
+    text-decoration-color: var(--or);
+    text-decoration-thickness: 4px;
+    text-underline-offset: 6px;
+  }
+
+  .description {
+    color: var(--gris);
+  }
+
+  .meta {
+    display: flex;
+    gap: 0.5rem;
+    color: var(--gris);
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 64rem) {
+    .featured {
+      grid-template-columns: 3fr 2fr;
+    }
+
+    .media {
+      aspect-ratio: auto;
+      min-height: 28rem;
+    }
+
+    .body {
+      padding: 2.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+import type { Crumb } from '../lib/seo';
+
+interface Props {
+  crumbs: Crumb[];
+}
+
+const { crumbs } = Astro.props;
+---
+
+<nav class="breadcrumb" aria-label="Fil d'Ariane">
+  <ol>
+    {
+      crumbs.map((crumb, index) => (
+        <li>
+          {index < crumbs.length - 1 ? (
+            <a href={crumb.path}>{crumb.name}</a>
+          ) : (
+            <span aria-current="page">{crumb.name}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--gris);
+    font-size: 0.8125rem;
+  }
+
+  li + li::before {
+    content: '›';
+    margin-right: 0.5rem;
+  }
+
+  a {
+    display: inline-block;
+    padding-block: 0.5rem;
+    text-underline-offset: 3px;
+  }
+
+  span {
+    display: inline-block;
+    padding-block: 0.5rem;
+  }
+</style>

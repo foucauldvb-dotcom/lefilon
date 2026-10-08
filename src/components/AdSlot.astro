@@ -1,0 +1,50 @@
+---
+import { ADS, type AdPosition } from '../config/ads';
+
+interface Props {
+  position: AdPosition;
+}
+
+const { position } = Astro.props;
+const { mobile, desktop } = ADS.slots[position];
+---
+
+{
+  ADS.enabled && (
+    <div
+      class="ad-slot"
+      data-ad-position={position}
+      style={`--ad-h-mobile:${mobile}px;--ad-h-desktop:${desktop}px`}
+      aria-label="Publicité"
+      role="complementary"
+    >
+      <span class="label">Publicité</span>
+    </div>
+  )
+}
+
+<style>
+  .ad-slot {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: var(--ad-h-mobile);
+    margin-block: 2rem;
+    background: var(--blanc);
+    border-radius: 0.5rem;
+  }
+
+  .label {
+    padding-top: 0.25rem;
+    color: var(--gris);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 48rem) {
+    .ad-slot {
+      min-height: var(--ad-h-desktop);
+    }
+  }
+</style>

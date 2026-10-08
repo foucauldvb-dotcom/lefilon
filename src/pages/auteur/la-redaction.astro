@@ -1,0 +1,82 @@
+---
+import ArticleGrid from '../../components/ArticleGrid.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { SITE, SOCIALS, absoluteUrl } from '../../config/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedArticles } from '../../lib/articles';
+import { breadcrumbSchema } from '../../lib/seo';
+
+const articles = (await getPublishedArticles()).filter((article) => article.data.author === SITE.defaultAuthor);
+const crumbs = [
+  { name: 'Accueil', path: '/' },
+  { name: SITE.defaultAuthor, path: SITE.authorPath },
+];
+const profileSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  mainEntity: {
+    '@type': 'Organization',
+    name: `${SITE.defaultAuthor} du Filon`,
+    url: absoluteUrl(SITE.authorPath),
+    email: SITE.email,
+    sameAs: SOCIALS.map((social) => social.url),
+  },
+};
+---
+
+<BaseLayout
+  title={SITE.defaultAuthor}
+  description="La rédaction du Filon déniche chaque jour les histoires qui font sourire. Chaque info est vérifiée et sa source est toujours citée."
+  jsonLd={[profileSchema, breadcrumbSchema(crumbs)]}
+>
+  <div class="container">
+    <header class="head">
+      <Breadcrumb crumbs={crumbs} />
+      <h1>{SITE.defaultAuthor}</h1>
+      <p>
+        Derrière chaque article du Filon, il y a une équipe qui creuse Internet pour n'en garder que les pépites. Notre
+        règle : chaque histoire est vérifiée et sa source est toujours citée. Pas de fausses nouvelles, même quand elles
+        sont belles.
+      </p>
+      <p>
+        Une histoire à nous partager, une erreur à signaler ? Écrivez-nous :
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </p>
+    </header>
+
+    <section aria-labelledby="articles-redaction">
+      <div class="section-head">
+        <h2 class="section-title" id="articles-redaction">Tous nos articles</h2>
+      </div>
+      <ArticleGrid articles={articles} showDescription />
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .head {
+    max-width: 48rem;
+    padding-block: 1.5rem 2.5rem;
+  }
+
+  h1 {
+    margin-top: 0.75rem;
+    font-size: clamp(2.25rem, 8vw, 3.5rem);
+  }
+
+  h1::after {
+    content: '.';
+    color: var(--or);
+  }
+
+  .head p {
+    margin-top: 1rem;
+  }
+
+  .head p a {
+    font-weight: 600;
+    text-decoration-color: var(--or);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 4px;
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+import InstagramBlock from '../components/InstagramBlock.astro';
+import { SITE } from '../config/site';
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="À propos"
+  description="Le Filon, c'est votre dose quotidienne de bonnes surprises : des histoires vérifiées qui font sourire, étonnent ou redonnent foi en l'humanité."
+>
+  <p class="lead">Le Filon, c'est votre dose quotidienne de bonnes surprises.</p>
+  <p>
+    Chaque jour, on déniche pour vous les histoires qui font sourire, étonnent ou redonnent foi en l'humanité : des
+    exploits incroyables, des animaux attachants, des chiffres fous, des gestes héroïques… et des bons filons pour mieux
+    gérer votre argent au quotidien.
+  </p>
+  <p>
+    Notre engagement : chaque histoire est vérifiée et sa source est toujours citée. Pas de fausses nouvelles, même quand
+    elles sont belles.
+  </p>
+  <p>
+    Une histoire à nous partager ? Écrivez-nous : <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+  </p>
+  <div class="insta">
+    <InstagramBlock />
+  </div>
+</PageLayout>
+
+<style>
+  .insta {
+    margin-top: 3rem;
+  }
+
+  .insta :global(a) {
+    font-weight: 800;
+  }
+</style>

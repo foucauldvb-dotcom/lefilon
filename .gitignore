@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+.env
+.env.*
+
+# Fichiers sources volumineux (photos brutes, visuels Instagram) : seuls les logos sont versionnés
+assets-source/*
+!assets-source/lefilon-logo-noir.png
+!assets-source/lefilon-logo-blanc.png
+!assets-source/lefilon-photo-profil-1080.png

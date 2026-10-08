@@ -1,0 +1,82 @@
+---
+import { SITE } from '../config/site';
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="Mentions légales"
+  description="Mentions légales du site lefilon.media : éditeur, directeur de la publication, hébergeur, propriété intellectuelle et contact."
+>
+  <p>
+    Conformément à l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, voici
+    les informations relatives au site <strong>lefilon.media</strong>.
+  </p>
+
+  <h2>Éditeur du site</h2>
+  <ul>
+    <li>Nom ou raison sociale : <span class="todo">[À COMPLÉTER]</span></li>
+    <li>Forme juridique et capital social (si société) : <span class="todo">[À COMPLÉTER]</span></li>
+    <li>Adresse du siège ou du domicile : <span class="todo">[À COMPLÉTER]</span></li>
+    <li>Numéro SIREN / SIRET : <span class="todo">[À COMPLÉTER]</span></li>
+    <li>Immatriculation RCS ou RNE (le cas échéant) : <span class="todo">[À COMPLÉTER]</span></li>
+    <li>Numéro de TVA intracommunautaire (le cas échéant) : <span class="todo">[À COMPLÉTER]</span></li>
+    <li>Téléphone : <span class="todo">[À COMPLÉTER]</span></li>
+    <li>E-mail : <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+  </ul>
+
+  <h2>Directeur de la publication</h2>
+  <p><span class="todo">[À COMPLÉTER : prénom et nom]</span></p>
+
+  <h2>Hébergeur</h2>
+  <ul>
+    <li>Raison sociale : <span class="todo">[À COMPLÉTER : OVH SAS, à confirmer]</span></li>
+    <li>Adresse : <span class="todo">[À COMPLÉTER : 2 rue Kellermann, 59100 Roubaix, France, à confirmer]</span></li>
+    <li>Téléphone : <span class="todo">[À COMPLÉTER : 1007, à confirmer]</span></li>
+    <li>Site web : <a href="https://www.ovhcloud.com/fr/" target="_blank" rel="noopener noreferrer">ovhcloud.com</a></li>
+  </ul>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>
+    L'ensemble des contenus publiés sur lefilon.media (textes, logo, identité graphique, mise en page) est protégé par
+    le droit d'auteur. Toute reproduction ou représentation, totale ou partielle, sans autorisation écrite préalable de
+    l'éditeur est interdite, à l'exception des courtes citations mentionnant clairement la source et accompagnées d'un
+    lien vers l'article d'origine.
+  </p>
+
+  <h2>Crédits photographiques</h2>
+  <p>
+    Les photographies illustrant les articles appartiennent à leurs auteurs respectifs et sont utilisées conformément à
+    leurs licences.
+  </p>
+  <p><span class="todo">[À COMPLÉTER : crédits et licences des photos utilisées]</span></p>
+
+  <h2>Sources et exactitude des informations</h2>
+  <p>
+    Chaque article du Filon cite ses sources. Malgré le soin apporté à la vérification, une erreur peut subsister : si
+    vous en repérez une, écrivez-nous à <a href={`mailto:${SITE.email}`}>{SITE.email}</a>, nous corrigerons dans les
+    meilleurs délais.
+  </p>
+
+  <h2>Liens hypertextes</h2>
+  <p>
+    Le site contient des liens vers des sites tiers, notamment vers les sources des articles. L'éditeur n'exerce aucun
+    contrôle sur ces sites et ne peut être tenu responsable de leur contenu.
+  </p>
+
+  <h2>Droit de réponse</h2>
+  <p>
+    Toute personne nommée ou désignée dans un article dispose d'un droit de réponse, qu'elle peut exercer en écrivant au
+    directeur de la publication à l'adresse <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+  </p>
+
+  <h2>Données personnelles</h2>
+  <p>
+    Le traitement de vos données est détaillé dans notre
+    <a href="/politique-de-confidentialite/">politique de confidentialité</a>.
+  </p>
+
+  <h2>Droit applicable</h2>
+  <p>Le présent site et ses mentions légales sont soumis au droit français.</p>
+
+  <p>Dernière mise à jour : <span class="todo">[À COMPLÉTER : date]</span></p>
+</PageLayout>

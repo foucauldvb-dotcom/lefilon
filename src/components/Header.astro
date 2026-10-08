@@ -1,0 +1,103 @@
+---
+import { Image } from 'astro:assets';
+import logoNoir from '../assets/logo/lefilon-logo-noir.png';
+import { RUBRIQUES, rubriqueUrl } from '../config/rubriques';
+import { SITE } from '../config/site';
+import SocialLinks from './SocialLinks.astro';
+
+const { pathname } = Astro.url;
+---
+
+<header class="site-header">
+  <div class="container top">
+    <a href="/" class="logo" aria-label={`${SITE.name}, retour à l'accueil`}>
+      <Image src={logoNoir} alt={SITE.name} width={148} height={40} densities={[1, 2]} loading="eager" />
+    </a>
+    <SocialLinks />
+  </div>
+  <nav class="rubriques" aria-label="Rubriques">
+    <ul class="container">
+      {
+        RUBRIQUES.map((rubrique) => {
+          const href = rubriqueUrl(rubrique.slug);
+          return (
+            <li>
+              <a href={href} aria-current={pathname.startsWith(href) ? 'page' : undefined}>
+                {rubrique.name}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    background: var(--blanc);
+    border-bottom: 1px solid var(--bordure);
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 0.5rem;
+  }
+
+  .logo {
+    display: block;
+    margin-left: -0.5rem;
+    padding-block: 0.25rem;
+  }
+
+  .rubriques {
+    border-top: 1px solid var(--bordure);
+  }
+
+  ul {
+    display: flex;
+    gap: 0.25rem;
+    margin-block: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  li {
+    flex-shrink: 0;
+  }
+
+  .rubriques a {
+    display: block;
+    padding: 0.875rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+  }
+
+  li:first-child a {
+    padding-left: 0;
+  }
+
+  .rubriques a:hover,
+  .rubriques a[aria-current='page'] {
+    border-bottom-color: var(--or);
+  }
+
+  @media (min-width: 48rem) {
+    .rubriques a {
+      padding-inline: 1rem;
+      font-size: 0.875rem;
+    }
+  }
+</style>

@@ -1,0 +1,118 @@
+---
+import { Image } from 'astro:assets';
+import { articleUrl, formatDate, type Article } from '../lib/articles';
+import RubriqueBadge from './RubriqueBadge.astro';
+
+interface Props {
+  article: Article;
+  heading?: 'h2' | 'h3';
+  showDescription?: boolean;
+}
+
+const { article, heading: Heading = 'h3', showDescription = false } = Astro.props;
+const { data } = article;
+---
+
+<article class="card">
+  <div class="media">
+    <Image
+      src={data.image}
+      alt={data.imageAlt}
+      width={640}
+      height={427}
+      fit="cover"
+      widths={[320, 480, 640, 960]}
+      sizes="(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 92vw"
+      format="webp"
+      loading="lazy"
+      decoding="async"
+    />
+    <span class="badge"><RubriqueBadge rubrique={data.rubrique} link={false} /></span>
+  </div>
+  <div class="body">
+    <Heading class="title">
+      <a href={articleUrl(article)}>{data.title}</a>
+    </Heading>
+    {showDescription && <p class="description">{data.description}</p>}
+    <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--blanc);
+    border-radius: var(--rayon);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+  }
+
+  .media {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    background: var(--bordure);
+  }
+
+  .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .badge {
+    position: absolute;
+    left: 0.875rem;
+    top: 0.875rem;
+    display: flex;
+  }
+
+  .body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 1.125rem 1.25rem 1.25rem;
+  }
+
+  .title {
+    font-size: 1.1875rem;
+    line-height: 1.25;
+  }
+
+  .title a {
+    text-decoration: none;
+  }
+
+  /* Toute la carte est cliquable */
+  .title a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card:hover .title a {
+    text-decoration: underline;
+    text-decoration-color: var(--or);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 4px;
+  }
+
+  .description {
+    color: var(--gris);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  time {
+    margin-top: auto;
+    color: var(--gris);
+    font-size: 0.8125rem;
+  }
+</style>

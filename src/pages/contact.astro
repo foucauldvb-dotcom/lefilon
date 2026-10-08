@@ -1,0 +1,33 @@
+---
+import { INSTAGRAM, SITE } from '../config/site';
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="Contact"
+  description="Une histoire à partager, une erreur à signaler, une idée de partenariat ? Écrivez à la rédaction du Filon : contact@lefilon.media."
+  intro="Une pépite à nous souffler, une question, une correction ? On lit tout."
+>
+  <h2>Nous écrire</h2>
+  <p>
+    Le plus simple, c'est par e-mail : <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+  </p>
+
+  <h2>Vous avez repéré une belle histoire ?</h2>
+  <p>
+    Envoyez-nous le lien vers sa source. On vérifie toujours avant de publier, alors plus la source est solide, plus
+    votre pépite a de chances de briller sur Le Filon.
+  </p>
+
+  <h2>Vous avez repéré une erreur ?</h2>
+  <p>
+    Dites-le-nous à la même adresse, en indiquant l'article concerné. Si on s'est trompés, on corrige et on le signale
+    dans l'article.
+  </p>
+
+  <h2>Nous suivre</h2>
+  <p>
+    Une pépite par jour dans votre fil, sur Instagram :
+    <a href={INSTAGRAM.url} target="_blank" rel="noopener noreferrer">{INSTAGRAM.handle}</a>
+  </p>
+</PageLayout>

@@ -1,0 +1,97 @@
+---
+import { INSTAGRAM, SITE } from '../config/site';
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="Politique de confidentialité"
+  description="Quelles données le site lefilon.media collecte, pourquoi, combien de temps, et comment exercer vos droits (RGPD)."
+  intro="En bref : on collecte le strict minimum, et on ne vend rien à personne."
+>
+  <h2>Responsable du traitement</h2>
+  <ul>
+    <li>Identité : <span class="todo">[À COMPLÉTER : nom ou raison sociale]</span></li>
+    <li>Adresse : <span class="todo">[À COMPLÉTER]</span></li>
+    <li>Contact : <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+  </ul>
+
+  <h2>Données que nous collectons</h2>
+  <ul>
+    <li>
+      <strong>Quand vous nous écrivez</strong> : votre adresse e-mail et le contenu de votre message, uniquement pour
+      vous répondre.
+    </li>
+    <li>
+      <strong>Quand vous consultez le site</strong> : notre hébergeur enregistre des journaux techniques (adresse IP,
+      date et heure, page demandée, navigateur) afin d'assurer la sécurité et le bon fonctionnement du service.
+    </li>
+  </ul>
+  <p>Le site ne propose ni création de compte, ni formulaire, ni espace de commentaires.</p>
+
+  <h2>Finalités et bases légales</h2>
+  <ul>
+    <li>Répondre à vos messages : intérêt légitime de l'éditeur à traiter les demandes qu'il reçoit.</li>
+    <li>Assurer la sécurité et le fonctionnement du site : intérêt légitime de l'éditeur.</li>
+  </ul>
+
+  <h2>Cookies et traceurs</h2>
+  <p>
+    À ce jour, lefilon.media ne dépose aucun cookie publicitaire ni aucun traceur de mesure d'audience. Les polices de
+    caractères sont hébergées sur notre propre serveur : aucune requête n'est envoyée à un service tiers lors de
+    l'affichage des pages.
+  </p>
+  <p>
+    Si des outils de mesure d'audience ou de la publicité devaient être ajoutés, cette page serait mise à jour et votre
+    consentement vous serait demandé au préalable lorsque la loi l'exige.
+  </p>
+  <p><span class="todo">[À COMPLÉTER si un outil de mesure d'audience ou une régie publicitaire est ajouté]</span></p>
+
+  <h2>Services tiers</h2>
+  <p>
+    Le site contient des liens vers notre compte Instagram (<a
+      href={INSTAGRAM.url}
+      target="_blank"
+      rel="noopener noreferrer">{INSTAGRAM.handle}</a
+    >) et vers les sources de nos articles. Ce sont de simples liens : aucune donnée n'est transmise à ces services tant
+    que vous ne cliquez pas dessus. Une fois sur ces sites, leur propre politique de confidentialité s'applique.
+  </p>
+
+  <h2>Destinataires des données</h2>
+  <ul>
+    <li>L'équipe du Filon, pour le traitement de vos messages.</li>
+    <li>
+      Notre hébergeur, pour les journaux techniques : <span class="todo">[À COMPLÉTER : nom et adresse de l'hébergeur]</span>
+    </li>
+    <li>Notre prestataire de messagerie : <span class="todo">[À COMPLÉTER]</span></li>
+  </ul>
+  <p>Vos données ne sont ni vendues, ni louées, ni cédées à des tiers.</p>
+
+  <h2>Durée de conservation</h2>
+  <ul>
+    <li>Messages reçus par e-mail : <span class="todo">[À COMPLÉTER : durée, par exemple 3 ans après le dernier échange]</span></li>
+    <li>Journaux techniques de l'hébergeur : <span class="todo">[À COMPLÉTER : durée appliquée par l'hébergeur]</span></li>
+  </ul>
+
+  <h2>Transferts hors de l'Union européenne</h2>
+  <p><span class="todo">[À COMPLÉTER : préciser si un prestataire traite des données hors de l'Union européenne]</span></p>
+
+  <h2>Vos droits</h2>
+  <p>
+    Conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et Libertés, vous
+    disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos
+    données.
+  </p>
+  <p>
+    Pour exercer ces droits, écrivez-nous à <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. Nous vous répondrons dans
+    un délai d'un mois.
+  </p>
+  <p>
+    Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous pouvez adresser une
+    réclamation à la CNIL :
+    <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener noreferrer">cnil.fr/fr/plaintes</a>.
+  </p>
+
+  <h2>Modification de cette politique</h2>
+  <p>Cette politique peut évoluer, notamment si de nouveaux services sont ajoutés au site.</p>
+  <p>Dernière mise à jour : <span class="todo">[À COMPLÉTER : date]</span></p>
+</PageLayout>
