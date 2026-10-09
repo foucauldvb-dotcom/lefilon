@@ -2,6 +2,7 @@
 import ArticleGrid from '../components/ArticleGrid.astro';
 import FeaturedArticle from '../components/FeaturedArticle.astro';
 import InstagramBlock from '../components/InstagramBlock.astro';
+import PodcastPlayer from '../components/PodcastPlayer.astro';
 import RubriqueBlock from '../components/RubriqueBlock.astro';
 import { RUBRIQUES } from '../config/rubriques';
 import { SITE } from '../config/site';
@@ -52,7 +53,8 @@ const blocks = RUBRIQUES.map((rubrique) => ({
     )
   }
 
-  <div class="container">
+  <div class="container blocks">
+    <PodcastPlayer />
     <InstagramBlock />
   </div>
 
@@ -64,6 +66,10 @@ const blocks = RUBRIQUES.map((rubrique) => ({
     padding-block: 1.75rem 1.5rem;
   }
 
+  .blocks {
+    display: grid;
+    gap: 1.5rem;
+  }
   h1 {
     max-width: 22ch;
     font-size: clamp(1.75rem, 6vw, 3rem);

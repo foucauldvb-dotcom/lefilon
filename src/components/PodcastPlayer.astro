@@ -1,0 +1,105 @@
+---
+import { PODCAST, podcastPlayerUrl } from '../config/podcast';
+
+const playerUrl = podcastPlayerUrl();
+---
+
+<aside class="podcast" aria-labelledby="podcast-title">
+  <div class="text">
+    <h2 id="podcast-title">Le Filon, le podcast</h2>
+    <p>{PODCAST.title} · {PODCAST.duration} d'écoute</p>
+  </div>
+  {/* Le lecteur Soundcast n'est chargé qu'au clic : aucune requête vers un tiers avant. */}
+  <div class="player" data-podcast-player={playerUrl} data-podcast-title={`Lecteur du podcast Le Filon : ${PODCAST.title}`}>
+    <a class="button" href={playerUrl} target="_blank" rel="noopener noreferrer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"></path>
+      </svg>
+      Écouter l'épisode
+    </a>
+    <p class="note">Le lecteur est fourni par Soundcast et se charge au clic.</p>
+  </div>
+</aside>
+
+<script>
+  // Sans JavaScript, le lien ouvre le lecteur dans un nouvel onglet.
+  for (const player of document.querySelectorAll<HTMLElement>('[data-podcast-player]')) {
+    const link = player.querySelector('a')!;
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const iframe = document.createElement('iframe');
+      iframe.src = player.dataset.podcastPlayer!;
+      iframe.title = player.dataset.podcastTitle!;
+      iframe.allow = 'autoplay';
+      iframe.width = '400';
+      iframe.height = '60';
+      player.replaceChildren(iframe);
+      iframe.focus();
+    });
+  }
+</script>
+
+<style>
+  .podcast {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 2rem 1.5rem;
+    background: var(--blanc);
+    border: 2px solid var(--noir);
+    border-radius: var(--rayon);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  h2::after {
+    content: '.';
+    color: var(--or);
+  }
+
+  .text p {
+    margin-top: 0.5rem;
+    color: var(--gris);
+  }
+
+  /* Hauteur réservée : le lecteur remplace le bouton sans décaler la page */
+  .player {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 5.5rem;
+  }
+
+  .button {
+    align-self: flex-start;
+  }
+
+  .note {
+    color: var(--gris);
+    font-size: 0.8125rem;
+  }
+
+  .player :global(iframe) {
+    display: block;
+    width: 100%;
+    max-width: 25rem;
+    height: 60px;
+    border: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .podcast {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2.5rem 3rem;
+    }
+
+    .player {
+      flex: 0 1 25rem;
+    }
+  }
+</style>

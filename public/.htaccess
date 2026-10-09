@@ -76,7 +76,8 @@ ErrorDocument 404 /404.html
   #   aux pages, autorisés par empreinte : le marqueur de script-src est remplacé au build
   #   (integrations/csp.mjs).
   # - style-src 'unsafe-inline' : le CSS est intégré au HTML pour la performance.
+  # - frame-src : lecteur du podcast (Soundcast), chargé seulement au clic du visiteur.
   # - À ÉLARGIR le jour où la publicité est activée (AdSense, puis Prebid / Google Ad Manager) :
   #   script-src, img-src, connect-src et frame-src devront autoriser les domaines de la régie.
-  Header always set Content-Security-Policy "default-src 'none'; script-src 'self' 'wasm-unsafe-eval' __SCRIPT_HASHES__; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Header always set Content-Security-Policy "default-src 'none'; script-src 'self' 'wasm-unsafe-eval' __SCRIPT_HASHES__; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://player.soundcast.io; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
 </IfModule>

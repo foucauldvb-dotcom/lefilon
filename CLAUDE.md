@@ -111,6 +111,12 @@ Une carte 1200 × 630 (rubrique, titre, logo) est générée par article dans `/
 - **Publicité : le jour où elle est activée (AdSense, puis Prebid / Google Ad Manager), la CSP devra être élargie** (`script-src`, `img-src`, `connect-src`, `frame-src` pour les domaines de la régie), et la politique de confidentialité ainsi que le consentement aux cookies devront être revus. Sans cela, les scripts publicitaires seront bloqués.
 - Pour tester la CSP en local : servir `dist/` avec l'Apache de macOS (`/usr/sbin/httpd`, `AllowOverride All`), en retirant `upgrade-insecure-requests` de la copie.
 
+## Podcast
+
+- Le lecteur Soundcast (`src/components/PodcastPlayer.astro`) est sur l'accueil. Épisode mis en avant : `src/config/podcast.ts`.
+- Il n'est chargé **qu'au clic** : le lecteur appelle Soundcast et Google Fonts, donc rien ne doit partir avant l'action du visiteur (c'est ce que dit la politique de confidentialité). Ne pas le remplacer par une iframe chargée d'office.
+- La CSP l'autorise par `frame-src https://player.soundcast.io`.
+
 ## Repères dans le code
 
 - `src/lib/articles.ts` : chargement des articles, filtre brouillons et dates, contrôle des images, articles liés.
