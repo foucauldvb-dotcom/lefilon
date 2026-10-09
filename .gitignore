@@ -13,3 +13,8 @@ assets-source/*
 
 # Couvertures typographiques, régénérées à chaque build
 src/assets/covers/
+
+# Fichiers de travail déposés par erreur dans le dépôt
+*.zip
+*.ics
+Icon?

@@ -37,14 +37,6 @@ interface Props {
 const { article, related } = Astro.props;
 const { data } = article;
 
-// Google Discover exige une image principale d'au moins 1200 px de large
-const MIN_IMAGE_WIDTH = 1200;
-if (data.image.width < MIN_IMAGE_WIDTH) {
-  throw new Error(
-    `Article "${article.id}" : l'image principale fait ${data.image.width} px de large, il en faut au moins ${MIN_IMAGE_WIDTH}.`,
-  );
-}
-
 const { Content } = await render(article);
 const rubrique = getRubrique(data.rubrique);
 const minutes = readingTime(article.body);

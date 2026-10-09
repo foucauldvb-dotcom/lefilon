@@ -1,10 +1,12 @@
 ---
 import { ADS } from '../config/ads';
+import { typoHtml } from '../lib/typo';
 import AdSlot from './AdSlot.astro';
 
 // Rend le texte de l'article et insère l'emplacement pub "milieu" après le paragraphe central.
 // Les images du texte occupent au plus la largeur de la colonne (45rem) : on le précise au navigateur.
-const html = (await Astro.slots.render('default')).replace(
+// La typographie française (espaces insécables) est appliquée ici, pas dans les fichiers Markdown.
+const html = typoHtml(await Astro.slots.render('default')).replace(
   /(<img\b[^>]*?\ssizes=")[^"]*(")/g,
   '$1(min-width: 48rem) 45rem, 100vw$2',
 );

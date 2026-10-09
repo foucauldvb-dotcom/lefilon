@@ -1,6 +1,7 @@
 import type { ImageMetadata } from 'astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { RubriqueSlug } from '../config/rubriques';
+import { typo } from './typo';
 
 type Entry = CollectionEntry<'articles'>;
 
@@ -12,19 +13,40 @@ const covers = import.meta.glob<{ default: ImageMetadata }>('../assets/covers/*.
 
 function withCover(entry: Entry): Article {
   const { image, imageAlt, coverText, coverSub } = entry.data;
-  if (image && imageAlt) return { ...entry, data: { ...entry.data, image, imageAlt } };
+  const data = {
+    ...entry.data,
+    title: typo(entry.data.title),
+    description: typo(entry.data.description),
+    sources: entry.data.sources.map((source) => ({ ...source, name: typo(source.name) })),
+  };
+  if (image && imageAlt) return { ...entry, data: { ...data, image, imageAlt: typo(imageAlt) } };
 
   const cover = covers[`../assets/covers/${entry.id}.jpg`]?.default;
   if (!cover) {
     throw new Error(`Article "${entry.id}" : couverture introuvable, relancez \`npm run covers\`.`);
   }
   const text = [coverText, coverSub].filter(Boolean).join(', ');
-  return { ...entry, data: { ...entry.data, image: cover, imageAlt: `Visuel Le Filon : « ${text} »` } };
+  return { ...entry, data: { ...data, image: cover, imageAlt: typo(`Visuel Le Filon : « ${text} »`) } };
 }
 
-// Les brouillons sont exclus partout : pages, flux RSS, sitemap.
+// Google Discover exige une image principale d'au moins 1200 px de large
+const MIN_IMAGE_WIDTH = 1200;
+
+// Les brouillons sont contrôlés aussi : mieux vaut le savoir avant la publication.
+function checkImageWidth({ id, data }: Entry) {
+  if (data.image && data.image.width < MIN_IMAGE_WIDTH) {
+    throw new Error(
+      `Article "${id}" : l'image principale fait ${data.image.width} px de large, il en faut au moins ${MIN_IMAGE_WIDTH}.`,
+    );
+  }
+}
+
+// Les brouillons et les articles datés dans le futur sont exclus partout : pages, flux RSS, sitemap.
 export async function getPublishedArticles(): Promise<Article[]> {
-  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  const now = Date.now();
+  const entries = await getCollection('articles');
+  entries.forEach(checkImageWidth);
+  const articles = entries.filter(({ data }) => !data.draft && data.date.getTime() <= now);
   return articles.map(withCover).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 

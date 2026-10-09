@@ -9,12 +9,12 @@ const articles = defineCollection({
   schema: ({ image }) =>
     z
       .object({
-        title: z.string().min(1),
+        title: z.string().min(1).max(90, 'Le titre ne doit pas dépasser 90 caractères'),
         description: z.string().min(1).max(160, 'La description ne doit pas dépasser 160 caractères'),
         date: z.coerce.date(),
         updatedDate: z.coerce.date().optional(),
         rubrique: z.enum(RUBRIQUE_SLUGS),
-        // La largeur minimale (1200 px) est contrôlée au build dans la page article
+        // La largeur minimale (1200 px) est contrôlée au build dans src/lib/articles.ts
         image: image().optional(),
         imageAlt: z.string().min(1).optional(),
         imageCredit: z.string().min(1).optional(),
