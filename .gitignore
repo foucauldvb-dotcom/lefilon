@@ -10,3 +10,6 @@ assets-source/*
 !assets-source/lefilon-logo-noir.png
 !assets-source/lefilon-logo-blanc.png
 !assets-source/lefilon-photo-profil-1080.png
+
+# Couvertures typographiques, régénérées à chaque build
+src/assets/covers/

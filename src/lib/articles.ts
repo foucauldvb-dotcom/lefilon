@@ -1,12 +1,31 @@
+import type { ImageMetadata } from 'astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { RubriqueSlug } from '../config/rubriques';
 
-export type Article = CollectionEntry<'articles'>;
+type Entry = CollectionEntry<'articles'>;
+
+// Une fois chargé, un article a toujours une image : sa photo ou sa couverture générée.
+export type Article = Entry & { data: Entry['data'] & { image: ImageMetadata; imageAlt: string } };
+
+// Couvertures typographiques créées par scripts/generate-covers.mjs
+const covers = import.meta.glob<{ default: ImageMetadata }>('../assets/covers/*.jpg', { eager: true });
+
+function withCover(entry: Entry): Article {
+  const { image, imageAlt, coverText, coverSub } = entry.data;
+  if (image && imageAlt) return { ...entry, data: { ...entry.data, image, imageAlt } };
+
+  const cover = covers[`../assets/covers/${entry.id}.jpg`]?.default;
+  if (!cover) {
+    throw new Error(`Article "${entry.id}" : couverture introuvable, relancez \`npm run covers\`.`);
+  }
+  const text = [coverText, coverSub].filter(Boolean).join(', ');
+  return { ...entry, data: { ...entry.data, image: cover, imageAlt: `Visuel Le Filon : « ${text} »` } };
+}
 
 // Les brouillons sont exclus partout : pages, flux RSS, sitemap.
 export async function getPublishedArticles(): Promise<Article[]> {
   const articles = await getCollection('articles', ({ data }) => !data.draft);
-  return articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return articles.map(withCover).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
 export async function getArticlesByRubrique(rubrique: RubriqueSlug): Promise<Article[]> {
