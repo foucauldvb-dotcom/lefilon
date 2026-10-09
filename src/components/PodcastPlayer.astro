@@ -1,21 +1,28 @@
 ---
-import { PODCAST, podcastPlayerUrl } from '../config/podcast';
+import { PODCAST_SIZES, podcastPlayerUrl, type PodcastLayout } from '../config/podcast';
 
-const playerUrl = podcastPlayerUrl();
+interface Props {
+  // horizontal : blocs larges (accueil). vertical : colonne étroite (fin d'article).
+  layout: PodcastLayout;
+}
+
+const { layout } = Astro.props;
+const playerUrl = podcastPlayerUrl(layout);
+const { width, height } = PODCAST_SIZES[layout];
 ---
 
-<aside class="podcast" aria-labelledby="podcast-title">
+<aside class:list={['podcast', `podcast--${layout}`]} aria-labelledby="podcast-title" data-pagefind-ignore>
   <div class="text">
     <h2 id="podcast-title">Le Filon, le podcast</h2>
-    <p>{PODCAST.title} · {PODCAST.duration} d'écoute</p>
+    <p>Les pépites de la semaine, à écouter.</p>
   </div>
   {/* Le lecteur Soundcast n'est chargé qu'au clic : aucune requête vers un tiers avant. */}
-  <div class="player" data-podcast-player={playerUrl} data-podcast-title={`Lecteur du podcast Le Filon : ${PODCAST.title}`}>
+  <div class="player" data-podcast-player={playerUrl} data-podcast-width={width} data-podcast-height={height}>
     <a class="button" href={playerUrl} target="_blank" rel="noopener noreferrer">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
         <path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"></path>
       </svg>
-      Écouter l'épisode
+      Écouter le podcast
     </a>
     <p class="note">Le lecteur est fourni par Soundcast et se charge au clic.</p>
   </div>
@@ -29,10 +36,10 @@ const playerUrl = podcastPlayerUrl();
       event.preventDefault();
       const iframe = document.createElement('iframe');
       iframe.src = player.dataset.podcastPlayer!;
-      iframe.title = player.dataset.podcastTitle!;
+      iframe.title = 'Lecteur du podcast Le Filon';
       iframe.allow = 'autoplay';
-      iframe.width = '400';
-      iframe.height = '60';
+      iframe.width = player.dataset.podcastWidth!;
+      iframe.height = player.dataset.podcastHeight!;
       player.replaceChildren(iframe);
       iframe.focus();
     });
@@ -64,13 +71,10 @@ const playerUrl = podcastPlayerUrl();
     color: var(--gris);
   }
 
-  /* Hauteur réservée : le lecteur remplace le bouton sans décaler la page */
   .player {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     gap: 0.5rem;
-    min-height: 5.5rem;
   }
 
   .button {
@@ -82,12 +86,15 @@ const playerUrl = podcastPlayerUrl();
     font-size: 0.8125rem;
   }
 
+  /* Les dimensions viennent des attributs width/height ; le lecteur ne dépasse jamais son bloc */
   .player :global(iframe) {
     display: block;
-    width: 100%;
-    max-width: 25rem;
-    height: 60px;
+    max-width: 100%;
     border: 0;
+  }
+
+  .podcast--vertical .player:has(:global(iframe)) {
+    align-items: center;
   }
 
   @media (min-width: 48rem) {
@@ -95,11 +102,12 @@ const playerUrl = podcastPlayerUrl();
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      gap: 2rem;
       padding: 2.5rem 3rem;
     }
 
-    .player {
-      flex: 0 1 25rem;
+    .podcast--horizontal .player {
+      flex: 0 1 34rem;
     }
   }
 </style>

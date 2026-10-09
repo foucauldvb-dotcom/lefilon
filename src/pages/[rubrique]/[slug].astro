@@ -6,6 +6,7 @@ import ArticleBody from '../../components/ArticleBody.astro';
 import ArticleGrid from '../../components/ArticleGrid.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import InstagramBlock from '../../components/InstagramBlock.astro';
+import PodcastPlayer from '../../components/PodcastPlayer.astro';
 import RubriqueBadge from '../../components/RubriqueBadge.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import SourceBox from '../../components/SourceBox.astro';
@@ -138,6 +139,7 @@ const heroWidths = [480, 768, 1200, 1600].filter((width) => width <= data.image.
   </article>
 
   <div class="container narrow insta">
+    <PodcastPlayer layout="vertical" />
     <InstagramBlock />
   </div>
 
@@ -228,6 +230,8 @@ const heroWidths = [480, 768, 1200, 1600].filter((width) => width <= data.image.
   }
 
   .insta {
+    display: grid;
+    gap: 1.5rem;
     margin-top: 3rem;
   }
 
