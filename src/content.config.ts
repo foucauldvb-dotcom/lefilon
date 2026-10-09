@@ -16,6 +16,7 @@ const articles = defineCollection({
       // La largeur minimale (1200 px) est contrôlée au build dans la page article
       image: image(),
       imageAlt: z.string().min(1),
+      imageCredit: z.string().min(1).optional(),
       sources: z
         .array(z.object({ name: z.string().min(1), url: z.url() }))
         .min(1, 'Au moins une source est obligatoire'),
