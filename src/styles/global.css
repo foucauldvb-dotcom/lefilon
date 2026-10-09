@@ -71,6 +71,14 @@ a {
   border-radius: 4px;
 }
 
+/* Sur fond noir, le contour de focus passe en or pour rester visible */
+.site-footer :focus-visible,
+.instagram :focus-visible,
+.voir-aussi :focus-visible,
+main .hero :focus-visible {
+  outline-color: var(--or);
+}
+
 .container {
   width: 100%;
   max-width: var(--largeur);
