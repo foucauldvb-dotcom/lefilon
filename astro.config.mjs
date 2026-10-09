@@ -3,6 +3,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { parse } from 'yaml';
+import csp from './integrations/csp.mjs';
 import nettoyage from './integrations/nettoyage.mjs';
 
 const SITE_URL = 'https://lefilon.media';
@@ -70,9 +71,10 @@ export default defineConfig({
   ],
   integrations: [
     sitemap({
-      filter: (page) => !excluded.has(page) && !page.includes('/404'),
+      filter: (page) => !excluded.has(page) && !page.includes('/404') && !page.includes('/recherche/'),
       serialize: (item) => ({ ...item, lastmod: lastmod.get(item.url) }),
     }),
     nettoyage(),
+    csp(),
   ],
 });
