@@ -13,6 +13,8 @@ export interface Rubrique {
   slug: RubriqueSlug;
   name: string;
   description: string;
+  // Texte d'introduction (2-3 phrases) affiché en haut de la page rubrique
+  intro?: string;
 }
 
 export const RUBRIQUES: Rubrique[] = [

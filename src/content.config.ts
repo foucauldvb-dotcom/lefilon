@@ -25,6 +25,8 @@ const articles = defineCollection({
         sources: z
           .array(z.object({ name: z.string().min(1), url: z.url() }))
           .min(1, 'Au moins une source est obligatoire'),
+        // Liens contextuels : identifiants (noms de fichier sans .md) d'articles proches
+        voirAussi: z.array(z.string().min(1)).max(3).default([]),
         author: z.string().default(SITE.defaultAuthor),
         draft: z.boolean().default(false),
       })

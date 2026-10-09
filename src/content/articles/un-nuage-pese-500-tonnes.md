@@ -6,6 +6,9 @@ rubrique: chiffre-fou
 image: ../../assets/articles/nuage.jpg
 imageAlt: "Illustration à l'aquarelle d'un gros nuage blanc dans un ciel bleu au-dessus d'un village"
 imageCredit: "Illustration générée par IA"
+voirAussi:
+  - pourquoi-le-ciel-est-bleu
+  - plus-d-arbres-que-d-etoiles
 sources:
   - name: "USGS Water Science School – How Much Does a Cloud Weigh?"
     url: "https://www.usgs.gov/special-topics/water-science-school/science/how-much-does-a-cloud-weigh"

@@ -6,6 +6,8 @@ rubrique: pepites
 image: ../../assets/articles/panda.jpg
 imageAlt: "Illustration à l'aquarelle d'un panda géant qui mange du bambou dans une forêt"
 imageCredit: "Illustration générée par IA"
+voirAussi:
+  - couche-d-ozone-se-repare
 sources:
   - name: "WWF – Giant Panda"
     url: "https://www.worldwildlife.org/species/giant-panda"

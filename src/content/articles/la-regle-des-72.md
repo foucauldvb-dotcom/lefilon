@@ -6,6 +6,8 @@ rubrique: bon-filon
 image: ../../assets/articles/regle-72.jpg
 imageAlt: "Illustration à l'aquarelle d'une tirelire d'où pousse une petite plante"
 imageCredit: "Illustration générée par IA"
+voirAussi:
+  - la-regle-des-72-a-plus-de-500-ans
 sources:
   - name: "Investopedia – Rule of 72"
     url: "https://www.investopedia.com/terms/r/ruleof72.asp"

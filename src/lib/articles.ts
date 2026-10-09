@@ -57,9 +57,20 @@ export async function getArticlesByRubrique(rubrique: RubriqueSlug): Promise<Art
 
 export const articleUrl = (article: Article) => `/${article.data.rubrique}/${article.id}/`;
 
+// Articles cités dans `voirAussi`. Un identifiant inconnu est une erreur, un brouillon est ignoré.
+export async function getVoirAussi(current: Article, published: Article[]): Promise<Article[]> {
+  if (current.data.voirAussi.length === 0) return [];
+  const known = new Set((await getCollection('articles')).map((entry) => entry.id));
+  return current.data.voirAussi.flatMap((id) => {
+    if (!known.has(id)) throw new Error(`Article "${current.id}" : voirAussi cite "${id}", qui n'existe pas.`);
+    return published.filter((article) => article.id === id);
+  });
+}
+
 // Articles de la même rubrique d'abord, complétés par les plus récents des autres rubriques.
-export function getRelatedArticles(current: Article, all: Article[], limit = 3): Article[] {
-  const others = all.filter((article) => article.id !== current.id);
+export function getRelatedArticles(current: Article, all: Article[], exclude: Article[] = [], limit = 3): Article[] {
+  const skipped = new Set([current.id, ...exclude.map((article) => article.id)]);
+  const others = all.filter((article) => !skipped.has(article.id));
   const sameRubrique = others.filter((article) => article.data.rubrique === current.data.rubrique);
   const rest = others.filter((article) => article.data.rubrique !== current.data.rubrique);
   return [...sameRubrique, ...rest].slice(0, limit);

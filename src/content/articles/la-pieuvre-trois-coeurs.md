@@ -6,6 +6,8 @@ rubrique: betes-de-scene
 image: ../../assets/articles/pieuvre-illustration.jpg
 imageAlt: "Illustration à l'aquarelle d'une pieuvre qui déploie ses tentacules au fond de l'eau"
 imageCredit: "Illustration générée par IA"
+voirAussi:
+  - 5-choses-sur-les-animaux
 sources:
   - name: "Smithsonian Magazine – Ten Wild Facts About Octopuses"
     url: "https://www.smithsonianmag.com/science-nature/ten-wild-facts-about-octopuses-they-have-three-hearts-big-brains-and-blue-blood-7625828/"

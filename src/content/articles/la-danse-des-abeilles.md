@@ -6,6 +6,9 @@ rubrique: betes-de-scene
 image: ../../assets/articles/abeilles.jpg
 imageAlt: "Illustration à l'aquarelle d'une abeille qui danse sur un rayon de miel entourée d'autres abeilles"
 imageCredit: "Illustration générée par IA"
+voirAussi:
+  - la-pieuvre-trois-coeurs
+  - 5-choses-sur-les-animaux
 sources:
   - name: "The Nobel Prize – Physiology or Medicine 1973"
     url: "https://www.nobelprize.org/prizes/medicine/1973/summary/"

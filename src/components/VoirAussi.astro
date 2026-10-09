@@ -1,0 +1,62 @@
+---
+import { articleUrl, type Article } from '../lib/articles';
+
+interface Props {
+  articles: Article[];
+}
+
+const { articles } = Astro.props;
+---
+
+<aside class="voir-aussi" aria-labelledby="voir-aussi-title">
+  <h2 id="voir-aussi-title">Dans le même filon</h2>
+  <ul>
+    {
+      articles.map((article) => (
+        <li>
+          <a href={articleUrl(article)}>{article.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</aside>
+
+<style>
+  .voir-aussi {
+    margin-top: 2.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--noir);
+    color: var(--blanc);
+    border-radius: 0.5rem;
+  }
+
+  h2 {
+    color: var(--or);
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li + li {
+    margin-top: 0.5rem;
+  }
+
+  a {
+    display: inline-block;
+    padding-block: 0.25rem;
+    font-weight: 600;
+    text-decoration-color: var(--or);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 4px;
+  }
+
+  a:focus-visible {
+    outline-color: var(--or);
+  }
+</style>

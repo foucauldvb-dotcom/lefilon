@@ -6,6 +6,8 @@ rubrique: le-saviez-vous
 image: ../../assets/articles/feuilles-automne.jpg
 imageAlt: "Illustration à l'aquarelle d'un grand arbre aux feuilles jaunes, orange et rouges"
 imageCredit: "Illustration générée par IA"
+voirAussi:
+  - pourquoi-le-ciel-est-bleu
 sources:
   - name: "US Forest Service – The Science of Fall Colors"
     url: "https://www.fs.usda.gov/visit/fall-colors/science-of-fall-colors"

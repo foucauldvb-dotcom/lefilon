@@ -8,6 +8,7 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import InstagramBlock from '../../components/InstagramBlock.astro';
 import RubriqueBadge from '../../components/RubriqueBadge.astro';
 import SourceBox from '../../components/SourceBox.astro';
+import VoirAussi from '../../components/VoirAussi.astro';
 import { getRubrique, rubriqueUrl } from '../../config/rubriques';
 import { SITE } from '../../config/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -16,6 +17,7 @@ import {
   formatDate,
   getPublishedArticles,
   getRelatedArticles,
+  getVoirAussi,
   readingTime,
   type Article,
 } from '../../lib/articles';
@@ -24,18 +26,24 @@ import { breadcrumbSchema, newsArticleSchema } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const articles = await getPublishedArticles();
-  return articles.map((article) => ({
-    params: { rubrique: article.data.rubrique, slug: article.id },
-    props: { article, related: getRelatedArticles(article, articles) },
-  }));
+  return Promise.all(
+    articles.map(async (article) => {
+      const voirAussi = await getVoirAussi(article, articles);
+      return {
+        params: { rubrique: article.data.rubrique, slug: article.id },
+        props: { article, voirAussi, related: getRelatedArticles(article, articles, voirAussi) },
+      };
+    }),
+  );
 }
 
 interface Props {
   article: Article;
+  voirAussi: Article[];
   related: Article[];
 }
 
-const { article, related } = Astro.props;
+const { article, voirAussi, related } = Astro.props;
 const { data } = article;
 
 const { Content } = await render(article);
@@ -117,6 +125,7 @@ const heroWidths = [480, 768, 1200, 1600].filter((width) => width <= data.image.
       <ArticleBody>
         <Content />
       </ArticleBody>
+      {voirAussi.length > 0 && <VoirAussi articles={voirAussi} />}
       <SourceBox sources={data.sources} />
       <AdSlot position="fin" />
     </div>

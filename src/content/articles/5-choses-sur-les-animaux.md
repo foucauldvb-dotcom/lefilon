@@ -5,6 +5,8 @@ date: 2026-10-06T08:00:00+02:00
 rubrique: le-saviez-vous
 image: ../../assets/articles/loutres-de-mer.jpg
 imageAlt: "Trois loutres de mer flottant sur le dos, côte à côte, à la surface de l'eau"
+voirAussi:
+  - la-pieuvre-trois-coeurs
 sources:
   - name: "Discover Magazine : pourquoi les loutres de mer se tiennent par la patte"
     url: "https://www.discovermagazine.com/sea-otters-hold-hands-while-sleeping-and-they-even-cuddle-46115"

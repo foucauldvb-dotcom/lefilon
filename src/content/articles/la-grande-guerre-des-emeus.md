@@ -6,6 +6,8 @@ rubrique: ovni
 image: ../../assets/articles/emeus.jpg
 imageAlt: "Illustration à l'aquarelle d'émeus qui courent dans un champ de blé"
 imageCredit: "Illustration générée par IA"
+voirAussi:
+  - monsieur-mangetout-homme-qui-a-mange-un-avion
 sources:
   - name: "Encyclopædia Britannica – Emu War"
     url: "https://www.britannica.com/topic/Emu-War"

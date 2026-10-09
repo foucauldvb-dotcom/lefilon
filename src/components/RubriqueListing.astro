@@ -38,6 +38,7 @@ const isEmpty = articles.length === 0;
       <Breadcrumb crumbs={crumbs} />
       <h1>{rubrique.name}</h1>
       <p>{rubrique.description}</p>
+      {rubrique.intro && currentPage === 1 && <p class="intro">{rubrique.intro}</p>}
     </header>
 
     {
@@ -83,6 +84,12 @@ const isEmpty = articles.length === 0;
     font-size: 1.125rem;
   }
 
+  .head .intro {
+    max-width: var(--largeur-texte);
+    margin-top: 1rem;
+    color: var(--noir);
+    font-size: 1rem;
+  }
   .empty {
     display: flex;
     flex-direction: column;

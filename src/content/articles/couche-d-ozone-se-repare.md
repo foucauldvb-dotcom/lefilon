@@ -5,6 +5,8 @@ date: 2026-10-08T08:00:00+02:00
 rubrique: pepites
 image: ../../assets/articles/terre.jpg
 imageAlt: "La Terre vue de l'espace, avec l'Afrique et l'océan Indien"
+voirAussi:
+  - le-panda-nest-plus-en-danger
 sources:
   - name: "Programme des Nations unies pour l'environnement : communiqué du 9 janvier 2023"
     url: "https://www.unep.org/news-and-stories/press-release/ozone-layer-recovery-track-helping-avoid-global-warming-05degc"

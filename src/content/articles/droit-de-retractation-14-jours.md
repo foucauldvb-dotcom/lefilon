@@ -6,6 +6,8 @@ rubrique: bon-filon
 image: ../../assets/articles/retractation.jpg
 imageAlt: "Illustration à l'aquarelle d'un colis en carton posé sur une table, entouré de papier de soie"
 imageCredit: "Illustration générée par IA"
+voirAussi:
+  - la-regle-des-72
 sources:
   - name: "Service-Public.fr – Droit de rétractation pour un achat à distance"
     url: "https://www.service-public.gouv.fr/particuliers/vosdroits/F10485"

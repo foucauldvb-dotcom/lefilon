@@ -6,6 +6,9 @@ rubrique: le-saviez-vous
 image: ../../assets/articles/ciel-bleu.jpg
 imageAlt: "Illustration à l'aquarelle de collines sous un grand ciel bleu lumineux"
 imageCredit: "Illustration générée par IA"
+voirAussi:
+  - un-nuage-pese-500-tonnes
+  - pourquoi-les-feuilles-changent-de-couleur
 sources:
   - name: "NASA Space Place – Why Is the Sky Blue?"
     url: "https://spaceplace.nasa.gov/blue-sky/"
