@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import { articleUrl, formatDate, readingTime, type Article } from '../lib/articles';
 import RubriqueBadge from './RubriqueBadge.astro';
 
@@ -13,7 +13,7 @@ const { data } = article;
 
 <article class="featured">
   <div class="media">
-    <Image
+    <Picture
       src={data.image}
       alt={data.imageAlt}
       width={1200}
@@ -21,7 +21,7 @@ const { data } = article;
       fit="cover"
       widths={[480, 768, 1200]}
       sizes="(min-width: 64rem) 44rem, 100vw"
-      format="webp"
+      formats={['avif', 'webp']}
       loading="eager"
       fetchpriority="high"
       decoding="async"

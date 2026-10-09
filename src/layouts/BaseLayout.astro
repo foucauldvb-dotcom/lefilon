@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
-import sora400 from '@fontsource/sora/files/sora-latin-400-normal.woff2?url';
-import sora800 from '@fontsource/sora/files/sora-latin-800-normal.woff2?url';
+import { Font } from 'astro:assets';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import Seo, { type SeoProps } from '../components/Seo.astro';
@@ -16,8 +15,7 @@ type Props = SeoProps;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preload" href={sora800} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={sora400} as="font" type="font/woff2" crossorigin />
+    <Font cssVariable="--font-sora" preload={[{ weight: 800 }, { weight: 400 }]} />
     <Seo {...Astro.props} />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />

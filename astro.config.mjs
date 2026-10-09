@@ -1,8 +1,9 @@
 // @ts-check
 import { readdirSync, readFileSync } from 'node:fs';
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { parse } from 'yaml';
+import nettoyage from './integrations/nettoyage.mjs';
 
 const SITE_URL = 'https://lefilon.media';
 const RUBRIQUES = ['pepites', 'ovni', 'betes-de-scene', 'chiffre-fou', 'bon-filon', 'le-saviez-vous'];
@@ -34,6 +35,13 @@ const lastmod = new Map(
   ]),
 );
 
+/** @param {number} weight */
+const soraVariant = (weight) => ({
+  weight,
+  style: /** @type {const} */ ('normal'),
+  src: /** @type {[string]} */ ([`./node_modules/@fontsource/sora/files/sora-latin-${weight}-normal.woff2`]),
+});
+
 export default defineConfig({
   site: SITE_URL,
   output: 'static',
@@ -47,10 +55,24 @@ export default defineConfig({
     // Images responsives (srcset) par défaut, y compris celles insérées dans le Markdown
     layout: 'constrained',
   },
+  // Sora (sous-ensemble latin) servie en local. Astro génère une police de repli aux mêmes métriques,
+  // ce qui évite que le texte bouge quand Sora arrive (CLS).
+  fonts: [
+    {
+      provider: fontProviders.local(),
+      name: 'Sora',
+      cssVariable: '--font-sora',
+      fallbacks: ['system-ui', 'sans-serif'],
+      options: {
+        variants: [soraVariant(400), soraVariant(600), soraVariant(800)],
+      },
+    },
+  ],
   integrations: [
     sitemap({
       filter: (page) => !excluded.has(page) && !page.includes('/404'),
       serialize: (item) => ({ ...item, lastmod: lastmod.get(item.url) }),
     }),
+    nettoyage(),
   ],
 });
