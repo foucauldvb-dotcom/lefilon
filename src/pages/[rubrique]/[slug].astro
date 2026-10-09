@@ -19,6 +19,7 @@ import {
   readingTime,
   type Article,
 } from '../../lib/articles';
+import { ogImagePath } from '../../lib/og';
 import { breadcrumbSchema, newsArticleSchema } from '../../lib/seo';
 
 export async function getStaticPaths() {
@@ -41,11 +42,11 @@ const { Content } = await render(article);
 const rubrique = getRubrique(data.rubrique);
 const minutes = readingTime(article.body);
 
-// Image de partage et formats 16:9, 4:3 et 1:1 recommandés par Google pour NewsArticle
+// Formats 16:9, 4:3 et 1:1 recommandés par Google pour NewsArticle (la photo sert à Discover,
+// la carte générée dans /og/ sert aux partages sur les réseaux)
 const cover = (width: number, height: number) =>
   getImage({ src: data.image, width, height, fit: 'cover', format: 'jpg', quality: 82 });
-const [og, wide, classic, square] = await Promise.all([
-  cover(1200, 630),
+const [wide, classic, square] = await Promise.all([
   cover(1200, 675),
   cover(1200, 900),
   cover(1200, 1200),
@@ -65,8 +66,8 @@ const heroWidths = [480, 768, 1200, 1600].filter((width) => width <= data.image.
   title={data.title}
   description={data.description}
   type="article"
-  image={og.src}
-  imageAlt={data.imageAlt}
+  image={ogImagePath(article)}
+  imageAlt={`${rubrique.name} : ${data.title}`}
   article={{
     publishedTime: data.date,
     modifiedTime: data.updatedDate,
