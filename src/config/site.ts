@@ -12,7 +12,7 @@ export const SITE = {
   url: 'https://lefilon.media',
   tagline: 'On creuse Internet pour vous et on ne garde que les pépites.',
   description:
-    "Le Filon, le média positif : bonnes nouvelles, insolite, animaux, chiffres fous et bons plans argent. On creuse Internet pour vous et on ne garde que les pépites.",
+    "Le Filon, le média positif : bonnes nouvelles, insolite, animaux, chiffres fous et argent pratique. On creuse Internet et on ne garde que les pépites.",
   lang: 'fr',
   locale: 'fr_FR',
   email: 'contact@lefilon.media',
