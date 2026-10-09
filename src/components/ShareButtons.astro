@@ -1,0 +1,111 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+const text = encodeURIComponent(title);
+const link = encodeURIComponent(url);
+
+// De simples liens : aucun script tiers, aucun traceur.
+const networks = [
+  { id: 'whatsapp', name: 'WhatsApp', href: `https://wa.me/?text=${text}%20${link}` },
+  { id: 'facebook', name: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${link}` },
+  { id: 'x', name: 'X', href: `https://x.com/intent/post?text=${text}&url=${link}` },
+] as const;
+---
+
+<aside class="share" aria-labelledby="share-title" data-pagefind-ignore>
+  <h2 id="share-title">Partager cette pépite</h2>
+  <ul>
+    {
+      networks.map((network) => (
+        <li>
+          <a href={network.href} target="_blank" rel="noopener noreferrer">
+            <Icon name={network.id} size={20} />
+            {network.name}
+            <span class="visually-hidden">(nouvel onglet)</span>
+          </a>
+        </li>
+      ))
+    }
+    <li>
+      {/* Affiché par le script : sans JavaScript, ce bouton ne servirait à rien */}
+      <button type="button" data-copy-link={url} hidden>
+        <Icon name="link" size={20} />
+        <span data-copy-label>Copier le lien</span>
+      </button>
+    </li>
+  </ul>
+  <p class="visually-hidden" role="status" data-copy-status></p>
+</aside>
+
+<script>
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-copy-link]')) {
+    if (!navigator.clipboard) continue;
+    button.hidden = false;
+    const label = button.querySelector('[data-copy-label]')!;
+    const status = button.closest('.share')!.querySelector('[data-copy-status]')!;
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(button.dataset.copyLink!);
+      label.textContent = 'Lien copié';
+      status.textContent = 'Lien copié dans le presse-papiers';
+      setTimeout(() => {
+        label.textContent = 'Copier le lien';
+        status.textContent = '';
+      }, 2500);
+    });
+  }
+</script>
+
+<style>
+  .share {
+    margin-top: 2.5rem;
+  }
+
+  h2 {
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li:has([hidden]) {
+    display: none;
+  }
+
+  a,
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.5rem 1.125rem;
+    background: var(--blanc);
+    color: var(--noir);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid var(--noir);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  a:hover,
+  button:hover {
+    background: var(--or);
+  }
+</style>

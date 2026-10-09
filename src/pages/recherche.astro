@@ -1,0 +1,224 @@
+---
+import Breadcrumb from '../components/Breadcrumb.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const crumbs = [
+  { name: 'Accueil', path: '/' },
+  { name: 'Recherche', path: '/recherche/' },
+];
+---
+
+<BaseLayout
+  title="Recherche"
+  description="Cherchez une pépite parmi tous les articles du Filon : animaux, chiffres fous, insolite, bonnes nouvelles et bons plans."
+  noindex
+>
+  <div class="container page">
+    <Breadcrumb crumbs={crumbs} />
+    <h1>Recherche</h1>
+    <form role="search" action="/recherche/" method="get">
+      <label for="q">Que cherchez-vous ?</label>
+      <div class="field">
+        <input id="q" name="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="pieuvre, épargne, forêt…" />
+        <button class="button button--noir" type="submit">Chercher</button>
+      </div>
+    </form>
+    <p class="status" role="status" data-search-status></p>
+    <ol class="results" data-search-results></ol>
+    <noscript>
+      <p>La recherche a besoin de JavaScript. Vous pouvez aussi parcourir les rubriques depuis le menu.</p>
+    </noscript>
+  </div>
+</BaseLayout>
+
+<script>
+  // Recherche statique Pagefind : l'index est généré après le build, dans dist/pagefind/.
+  interface PagefindResult {
+    data: () => Promise<{ url: string; excerpt: string; meta: Record<string, string> }>;
+  }
+  interface Pagefind {
+    init: () => Promise<void>;
+    debouncedSearch: (query: string, options?: object, delay?: number) => Promise<{ results: PagefindResult[] } | null>;
+  }
+
+  const MAX_RESULTS = 20;
+  const form = document.querySelector<HTMLFormElement>('form[role="search"]')!;
+  const input = document.querySelector<HTMLInputElement>('#q')!;
+  const status = document.querySelector<HTMLElement>('[data-search-status]')!;
+  const list = document.querySelector<HTMLElement>('[data-search-results]')!;
+  let pagefind: Pagefind | undefined;
+
+  async function load(): Promise<Pagefind> {
+    if (!pagefind) {
+      const path = '/pagefind/pagefind.js';
+      pagefind = (await import(/* @vite-ignore */ path)) as Pagefind;
+      await pagefind.init();
+    }
+    return pagefind;
+  }
+
+  async function search(query: string) {
+    if (!query.trim()) {
+      list.replaceChildren();
+      status.textContent = '';
+      return;
+    }
+    let found;
+    try {
+      found = await (await load()).debouncedSearch(query, {}, 200);
+    } catch {
+      status.textContent = "La recherche n'est pas disponible pour le moment.";
+      return;
+    }
+    // null : une frappe plus récente a remplacé cette recherche
+    if (found === null) return;
+
+    const results = await Promise.all(found.results.slice(0, MAX_RESULTS).map((result) => result.data()));
+    const count = found.results.length;
+    status.textContent =
+      count === 0 ? `Aucune pépite pour « ${query} ».` : `${count} résultat${count > 1 ? 's' : ''} pour « ${query} »`;
+
+    list.replaceChildren(
+      ...results.map((result) => {
+        const item = document.createElement('li');
+        const rubrique = document.createElement('p');
+        rubrique.className = 'rubrique';
+        rubrique.textContent = result.meta.rubrique ?? '';
+        const title = document.createElement('h2');
+        const link = document.createElement('a');
+        link.href = result.url;
+        link.textContent = result.meta.title ?? result.url;
+        title.append(link);
+        const excerpt = document.createElement('p');
+        excerpt.className = 'excerpt';
+        // Extrait fourni par Pagefind : texte échappé, avec les termes trouvés entre <mark>
+        excerpt.innerHTML = result.excerpt;
+        item.append(rubrique, title, excerpt);
+        return item;
+      }),
+    );
+  }
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    history.replaceState(null, '', `?q=${encodeURIComponent(input.value)}`);
+    search(input.value);
+  });
+  input.addEventListener('input', () => search(input.value));
+
+  const initial = new URLSearchParams(location.search).get('q');
+  if (initial) {
+    input.value = initial;
+    search(initial);
+  }
+</script>
+
+<style>
+  .page {
+    max-width: calc(var(--largeur-texte) + 2 * var(--gouttiere));
+    padding-block: 1.5rem 2rem;
+  }
+
+  h1 {
+    margin-top: 1rem;
+    font-size: clamp(2rem, 7vw, 3rem);
+  }
+
+  h1::after {
+    content: '.';
+    color: var(--or);
+  }
+
+  form {
+    margin-top: 1.5rem;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+  }
+
+  .field {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  input {
+    flex: 1;
+    min-width: 12rem;
+    min-height: 3rem;
+    padding: 0.5rem 1rem;
+    background: var(--blanc);
+    color: var(--noir);
+    font: inherit;
+    border: 2px solid var(--noir);
+    border-radius: 999px;
+  }
+
+  input::placeholder {
+    color: var(--gris);
+  }
+
+  button {
+    font: inherit;
+    font-weight: 800;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .status {
+    min-height: 1.75rem;
+    margin-top: 1.5rem;
+    color: var(--gris);
+  }
+
+  .results {
+    display: grid;
+    gap: 1rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .results :global(li) {
+    padding: 1.25rem 1.5rem;
+    background: var(--blanc);
+    border-radius: var(--rayon);
+  }
+
+  .results :global(.rubrique) {
+    color: var(--gris);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .results :global(h2) {
+    margin-top: 0.25rem;
+    font-size: 1.1875rem;
+    line-height: 1.25;
+  }
+
+  .results :global(a) {
+    text-decoration-color: var(--or);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 4px;
+  }
+
+  .results :global(.excerpt) {
+    margin-top: 0.5rem;
+    color: var(--gris);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .results :global(mark) {
+    padding-inline: 0.15em;
+    background: var(--or);
+    color: var(--noir);
+    border-radius: 0.2em;
+  }
+</style>

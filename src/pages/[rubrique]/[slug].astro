@@ -7,10 +7,11 @@ import ArticleGrid from '../../components/ArticleGrid.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import InstagramBlock from '../../components/InstagramBlock.astro';
 import RubriqueBadge from '../../components/RubriqueBadge.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
 import SourceBox from '../../components/SourceBox.astro';
 import VoirAussi from '../../components/VoirAussi.astro';
 import { getRubrique, rubriqueUrl } from '../../config/rubriques';
-import { SITE } from '../../config/site';
+import { SITE, absoluteUrl } from '../../config/site';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
   articleUrl,
@@ -84,13 +85,17 @@ const heroWidths = [480, 768, 1200, 1600].filter((width) => width <= data.image.
   }}
   jsonLd={[newsArticleSchema(article, schemaImages), breadcrumbSchema(crumbs)]}
 >
-  <article>
+  <article data-pagefind-body>
     <header class="container narrow head">
-      <Breadcrumb crumbs={crumbs.slice(0, 2)} />
-      <p class="badge"><RubriqueBadge rubrique={data.rubrique} /></p>
+      <div data-pagefind-ignore>
+        <Breadcrumb crumbs={crumbs.slice(0, 2)} />
+      </div>
+      <p class="badge" data-pagefind-meta={`rubrique:${rubrique.name}`} data-pagefind-ignore>
+        <RubriqueBadge rubrique={data.rubrique} />
+      </p>
       <h1>{data.title}</h1>
       <p class="chapo">{data.description}</p>
-      <p class="meta">
+      <p class="meta" data-pagefind-ignore>
         <span>Par <a href={SITE.authorPath} rel="author">{data.author}</a></span>
         <span aria-hidden="true">·</span>
         <time datetime={data.date.toISOString()}>{formatDate(data.date)}</time>
@@ -127,6 +132,7 @@ const heroWidths = [480, 768, 1200, 1600].filter((width) => width <= data.image.
       </ArticleBody>
       {voirAussi.length > 0 && <VoirAussi articles={voirAussi} />}
       <SourceBox sources={data.sources} />
+      <ShareButtons title={data.title} url={absoluteUrl(articleUrl(article))} />
       <AdSlot position="fin" />
     </div>
   </article>

@@ -1,6 +1,6 @@
 ---
 interface Props {
-  name: 'instagram' | 'tiktok' | 'facebook' | 'rss' | 'arrow';
+  name: 'instagram' | 'tiktok' | 'facebook' | 'rss' | 'arrow' | 'whatsapp' | 'x' | 'link' | 'search';
   size?: number;
 }
 
@@ -47,4 +47,29 @@ const { name, size = 24 } = Astro.props;
     )
   }
   {name === 'arrow' && <path d="M4 12h15M13 6l6 6-6 6" />}
+  {
+    name === 'whatsapp' && (
+      <>
+        <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.6-4.3A8.5 8.5 0 1 1 20.5 11.5z" />
+        <path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8a4 4 0 0 1-2.3-2.3l.8-1-1-2z" />
+      </>
+    )
+  }
+  {name === 'x' && <path d="M4.5 4l15 16M19.5 4l-15 16" />}
+  {
+    name === 'link' && (
+      <>
+        <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" />
+        <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
+      </>
+    )
+  }
+  {
+    name === 'search' && (
+      <>
+        <circle cx="11" cy="11" r="6.5" />
+        <path d="M16 16l4.5 4.5" />
+      </>
+    )
+  }
 </svg>
