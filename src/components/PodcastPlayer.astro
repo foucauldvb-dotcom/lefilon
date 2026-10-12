@@ -16,35 +16,16 @@ const { width, height } = PODCAST_SIZES[layout];
     <h2 id="podcast-title">Le Filon, le podcast</h2>
     <p>Les pépites de la semaine, à écouter.</p>
   </div>
-  {/* Le lecteur Soundcast n'est chargé qu'au clic : aucune requête vers un tiers avant. */}
-  <div class="player" data-podcast-player={playerUrl} data-podcast-width={width} data-podcast-height={height}>
-    <a class="button" href={playerUrl} target="_blank" rel="noopener noreferrer">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-        <path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"></path>
-      </svg>
-      Écouter le podcast
-    </a>
-    <p class="note">Le lecteur est fourni par Soundcast et se charge au clic.</p>
+  {/* Lecteur Soundcast intégré directement : il contacte Soundcast et Google Fonts à l'affichage (voir la politique de confidentialité). */}
+  <div class="player">
+    <iframe
+      src={playerUrl}
+      title="Lecteur du podcast Le Filon"
+      width={width}
+      height={height}
+      loading="lazy"></iframe>
   </div>
 </aside>
-
-<script>
-  // Sans JavaScript, le lien ouvre le lecteur dans un nouvel onglet.
-  for (const player of document.querySelectorAll<HTMLElement>('[data-podcast-player]')) {
-    const link = player.querySelector('a')!;
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      const iframe = document.createElement('iframe');
-      iframe.src = player.dataset.podcastPlayer!;
-      iframe.title = 'Lecteur du podcast Le Filon';
-      iframe.allow = 'autoplay';
-      iframe.width = player.dataset.podcastWidth!;
-      iframe.height = player.dataset.podcastHeight!;
-      player.replaceChildren(iframe);
-      iframe.focus();
-    });
-  }
-</script>
 
 <style>
   .podcast {
@@ -74,26 +55,16 @@ const { width, height } = PODCAST_SIZES[layout];
   .player {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .button {
-    align-self: flex-start;
-  }
-
-  .note {
-    color: var(--gris);
-    font-size: 0.8125rem;
   }
 
   /* Les dimensions viennent des attributs width/height ; le lecteur ne dépasse jamais son bloc */
-  .player :global(iframe) {
+  iframe {
     display: block;
     max-width: 100%;
     border: 0;
   }
 
-  .podcast--vertical .player:has(:global(iframe)) {
+  .podcast--vertical .player {
     align-items: center;
   }
 

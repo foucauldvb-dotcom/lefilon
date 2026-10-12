@@ -115,7 +115,7 @@ Une carte 1200 × 630 (rubrique, titre, logo) est générée par article dans `/
 
 - Lecteur Soundcast : `src/components/PodcastPlayer.astro`, réglages dans `src/config/podcast.ts`. Il affiche toujours le dernier épisode.
 - Deux formats, un seul par page : `layout="horizontal"` (544 × 176) sur l'accueil, `layout="vertical"` (265 × 490) en fin d'article.
-- Il n'est chargé **qu'au clic** : le lecteur appelle Soundcast et Google Fonts, donc rien ne doit partir avant l'action du visiteur (c'est ce que dit la politique de confidentialité). Ne pas le remplacer par une iframe chargée d'office sans accord.
+- Il est intégré **directement** (iframe en `loading="lazy"`, décision de l'éditeur du 12 octobre 2026) : Soundcast et Google Fonts sont contactés dès l'affichage, ce que dit la politique de confidentialité. La lecture, elle, ne démarre qu'au clic (réglage côté Soundcast, pas d'`allow="autoplay"`).
 - La CSP l'autorise par `frame-src https://player.soundcast.io`.
 
 ## Repères dans le code
