@@ -3,6 +3,9 @@ name: Déploiement OVH
 on:
   push:
     branches: [main]
+  # Build quotidien : met en ligne les articles dont la date est arrivée (04:17 UTC, soit 5 h 17 ou 6 h 17 à Paris)
+  schedule:
+    - cron: '17 4 * * *'
   workflow_dispatch:
 
 concurrency:

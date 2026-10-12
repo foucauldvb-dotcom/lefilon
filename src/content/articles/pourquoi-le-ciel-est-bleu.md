@@ -13,7 +13,7 @@ sources:
   - name: "NASA Space Place – Why Is the Sky Blue?"
     url: "https://spaceplace.nasa.gov/blue-sky/"
 author: "La rédaction"
-draft: true
+draft: false
 ---
 
 C'est l'une des questions que tous les enfants posent un jour, et à laquelle beaucoup d'adultes ne savent pas répondre. Pourquoi le ciel est-il bleu, alors que la lumière du soleil nous paraît blanche ?

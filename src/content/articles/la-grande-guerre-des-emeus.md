@@ -12,7 +12,7 @@ sources:
   - name: "Encyclopædia Britannica – Emu War"
     url: "https://www.britannica.com/topic/Emu-War"
 author: "La rédaction"
-draft: true
+draft: false
 ---
 
 Certaines histoires semblent tout droit sorties d'un film comique. Celle-ci s'est pourtant bel et bien déroulée en Australie, à la fin de l'année 1932. Son nom officieux : la **Grande Guerre des Émeus**.

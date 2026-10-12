@@ -12,7 +12,7 @@ sources:
   - name: "Service-Public.fr – Droit de rétractation pour un achat à distance"
     url: "https://www.service-public.gouv.fr/particuliers/vosdroits/F10485"
 author: "La rédaction"
-draft: true
+draft: false
 ---
 
 Un pull qui ne tombe pas comme prévu, un gadget finalement inutile, un achat fait trop vite un soir de soldes… Bonne nouvelle : quand on achète en ligne auprès d'un professionnel, la loi prévoit un **droit de rétractation**. Mode d'emploi.

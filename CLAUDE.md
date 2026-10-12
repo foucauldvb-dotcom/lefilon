@@ -56,7 +56,7 @@ author: "La rédaction"
 draft: true
 ```
 
-- Un article est en ligne s'il a `draft: false` **et** une date passée. Un article daté dans le futur n'apparaît qu'au premier build après sa date (pas de build programmé pour l'instant).
+- Un article est en ligne s'il a `draft: false` **et** une date passée. Un article daté dans le futur n'apparaît qu'au premier build après sa date : un build quotidien programmé (`.github/workflows/deploy.yml`, 04:17 UTC) s'en charge. GitHub suspend ce build programmé après 60 jours sans activité sur le dépôt ; un push le relance.
 - Brouillons et articles futurs sont exclus partout : pages, RSS, sitemap, recherche.
 - **Typographie** : écrire avec des espaces simples et des apostrophes droites. Les espaces insécables (avant `: ; ! ?`, dans `« »`, dans `3 000`, avant `%`) et les apostrophes courbes sont ajoutées au build par `src/lib/typo.ts`.
 - Ne pas terminer un article par un appel à suivre Instagram : le bloc « Suivez-nous sur Instagram » est ajouté automatiquement.

@@ -13,7 +13,7 @@ sources:
   - name: "USGS Water Science School – How Much Does a Cloud Weigh?"
     url: "https://www.usgs.gov/special-topics/water-science-school/science/how-much-does-a-cloud-weigh"
 author: "La rédaction"
-draft: true
+draft: false
 ---
 
 Les nuages ont l'air légers comme du coton. Pourtant, un nuage tout à fait ordinaire pèse à peu près autant que… plusieurs centaines de voitures.

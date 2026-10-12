@@ -14,7 +14,7 @@ sources:
   - name: "Liste rouge de l'UICN – Ailuropoda melanoleuca"
     url: "https://www.iucnredlist.org/species/712/121745669"
 author: "La rédaction"
-draft: true
+draft: false
 ---
 
 Pendant des décennies, le panda géant a été le symbole des espèces menacées. Aujourd'hui, il est aussi devenu le symbole d'une bonne nouvelle : **la protection de la nature, ça marche**.
