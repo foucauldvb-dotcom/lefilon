@@ -1,0 +1,12 @@
+{
+  "id": "test-story",
+  "when": "2026-10-28T13:46:00+01:00",
+  "type": "story",
+  "caption": "",
+  "media": [
+    "ig/test-story/01.jpg"
+  ],
+  "ia": false,
+  "status": "pending",
+  "attempts": 0
+}
