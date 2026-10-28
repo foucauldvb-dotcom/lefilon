@@ -7,6 +7,9 @@
     "ig/test-story/01.jpg"
   ],
   "ia": false,
-  "status": "pending",
-  "attempts": 0
+  "status": "published",
+  "attempts": 0,
+  "published_at": "2026-10-28T16:17:54.763Z",
+  "media_id": "18177277819449735",
+  "permalink": "https://www.instagram.com/stories/lefilon.media/4018011069716444813"
 }
