@@ -1,0 +1,60 @@
+name: Instagram – publication programmée
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'   # toutes les 15 min (GitHub peut avoir quelques minutes de retard)
+    - cron: '17 6 * * 1'     # chaque lundi : prolongation de la clé d'accès
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'publish, check, refresh ou dry-run'
+        default: 'publish'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-publish
+  cancel-in-progress: false
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      SITE_URL: https://lefilon.media
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prolonger la clé (le lundi) ou à la demande
+        if: github.event.schedule == '17 6 * * 1' || inputs.action == 'refresh'
+        run: node studio/publish.mjs refresh
+
+      - name: Vérifier la clé et le quota
+        if: inputs.action == 'check'
+        run: node studio/publish.mjs check
+
+      - name: Simulation
+        if: inputs.action == 'dry-run'
+        run: node studio/publish.mjs --dry-run
+
+      - name: Publier ce qui est dû
+        if: github.event.schedule == '*/15 * * * *' || inputs.action == 'publish'
+        run: node studio/publish.mjs
+
+      - name: Enregistrer les statuts
+        if: always() && (github.event.schedule == '*/15 * * * *' || inputs.action == 'publish')
+        run: |
+          if [ -n "$(git status --porcelain studio/queue)" ]; then
+            git config user.name "lefilon-bot"
+            git config user.email "bot@lefilon.media"
+            git add studio/queue
+            git commit -m "Instagram : statuts de publication [skip ci]"
+            git pull --rebase
+            git push
+          fi

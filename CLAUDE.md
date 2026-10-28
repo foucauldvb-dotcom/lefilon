@@ -125,3 +125,5 @@ Une carte 1200 × 630 (rubrique, titre, logo) est générée par article dans `/
 - `src/pages/[rubrique]/[slug].astro` : page article.
 - `integrations/nettoyage.mjs` : retire de `dist/` les images non référencées.
 - `scripts/generate-covers.mjs` : couvertures typographiques (`coverText`).
+
+@studio/CLAUDE.md

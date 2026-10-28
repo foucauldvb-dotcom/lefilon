@@ -25,6 +25,8 @@ ErrorDocument 404 /404.html
   AddType font/woff2 .woff2
   AddType font/woff .woff
   AddType application/manifest+json .webmanifest
+  # Reels Instagram (public/ig/) : l'API exige le bon Content-Type
+  AddType video/mp4 .mp4
 </IfModule>
 
 # --- Compression gzip/deflate ---

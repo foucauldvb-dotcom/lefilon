@@ -1,0 +1,15 @@
+{
+  "name": "lefilon-studio",
+  "private": true,
+  "type": "module",
+  "description": "Production et publication automatique des contenus Instagram du Filon",
+  "scripts": {
+    "build": "node build.mjs",
+    "enqueue": "node enqueue.mjs",
+    "check": "node publish.mjs check",
+    "dry-run": "node publish.mjs --dry-run"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}

@@ -1,0 +1,4 @@
+.env
+node_modules/
+semaines/*/out/
+semaines/*/planche.html
